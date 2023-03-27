@@ -1,0 +1,18 @@
+baseURL = 'http://example.org/'
+languageCode = 'zh-TW'
+title = 'cwHsueh'
+theme = 'hugo-theme-stack'
+
+[menu]
+[[menu.main]]
+  name = 'Home'
+  pageRef = '/'
+  weight = 10
+[[menu.main]]
+  name = 'Products'
+  pageRef = '/content/test.md'
+  weight = 20
+[[menu.main]]
+  name = 'Services'
+  pageRef = '/'
+  weight = 30
