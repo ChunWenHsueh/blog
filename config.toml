@@ -16,3 +16,6 @@ theme = 'hugo-theme-stack'
   name = 'Services'
   pageRef = '/'
   weight = 30
+
+[[module.imports]]
+path = "github.com/CaiJimmy/hugo-theme-stack/v3"
