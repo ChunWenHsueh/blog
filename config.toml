@@ -4,18 +4,18 @@ title = 'cwHsueh'
 theme = 'hugo-theme-stack'
 
 [menu]
-[[menu.main]]
-  name = 'Home'
-  pageRef = '/'
-  weight = 10
-[[menu.main]]
-  name = 'Products'
-  pageRef = '/content/test.md'
-  weight = 20
-[[menu.main]]
-  name = 'Services'
-  pageRef = '/'
-  weight = 30
+  [[menu.main]]
+    name = 'Leetcode Menu'
+    url = '/page/leetcode'
+    weight = 15
+  [[menu.main]]
+    name = 'Home'
+    url = '/'
+    weight = 10
+  [[menu.main]]
+    name = 'About me'
+    url = '/'
+    weight = 20
 
-[[module.imports]]
-path = "github.com/CaiJimmy/hugo-theme-stack/v3"
+[params]
+    mainSections = ["post"]
