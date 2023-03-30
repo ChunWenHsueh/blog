@@ -6,7 +6,7 @@ theme = 'hugo-theme-stack'
 [menu]
   [[menu.main]]
     name = 'Leetcode Menu'
-    url = '/page/leetcode'
+    url = '/leetcode/menu'
     weight = 15
   [[menu.main]]
     name = 'Home'
