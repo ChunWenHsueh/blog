@@ -10,5 +10,5 @@ This is the leetcode menu.
 ## Hash Map
 [1. Two Sum]({{< ref "1.Two-Sum.md" >}})
 
-## Math
+## Greedy
 [2601. Prime Subtraction Operation]({{< ref "2601.Prime-Subtraction-Operation.md" >}})
