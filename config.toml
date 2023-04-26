@@ -1,6 +1,6 @@
 baseURL = 'http://example.org/'
 languageCode = 'zh-TW'
-title = 'cwHsueh'
+title = 'cwh'
 theme = 'hugo-theme-stack'
 
 [menu]
@@ -18,4 +18,4 @@ theme = 'hugo-theme-stack'
     weight = 20
 
 [params]
-    mainSections = ["post"]
+  mainSections = ["post"]
