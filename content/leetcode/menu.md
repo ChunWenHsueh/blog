@@ -5,6 +5,8 @@ draft: false
 ---
 
 This is the leetcode menu.
+# BFS
+[386. Lexicographical Numbers]({{< ref "386.Lexicographical-Numbers.md" >}})
 
 # Stack
 [946. Validate Stack Sequences]({{< ref "946.Validate-Stack-Sequences.md" >}})
