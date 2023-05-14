@@ -1,6 +1,6 @@
 baseURL = 'http://example.org/'
 languageCode = 'zh-TW'
-title = 'cwh'
+title = 'cwHsueh'
 theme = 'hugo-theme-stack'
 
 [menu]
@@ -19,3 +19,9 @@ theme = 'hugo-theme-stack'
 
 [params]
   mainSections = ["post"]
+
+  [params.widgets]
+    enabled = ['search']
+
+  [params.article]
+    readingTime = false
