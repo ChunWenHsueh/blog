@@ -15,18 +15,19 @@ This is the leetcode menu.
 # Hash Map
 [1. Two Sum]({{< ref "1.Two-Sum.md" >}})
 
+# Recursion
+
+[87. Scramble String]({{< ref "87.Scramble-String.md" >}})
 # Greedy
 [2601. Prime Subtraction Operation]({{< ref "2601.Prime-Subtraction-Operation.md" >}})
 
 # Dynamic Programming
-
 ## 矩陣型
 [516.Longest Palindromic Subsequence]({{< ref "516.Longest-Palindromic-Subsequence.md" >}})\
 [1639. Number of Ways to Form a Target String Given a Dictionary]({{< ref "1639.Number-of-Ways-to-Form-a-Target-String-Given-a-Dictionary.md" >}})\
+[1799. Maximize Score After N Operations]({{< ref "1799.Maximize-Score-After-N-Operations.md" >}})\
 [2218. Maximum Value of K Coins From Piles]({{< ref "2218.Maximum-Value-of-K-Coins-From-Piles.md" >}})\
 [2684. Maximum Number of Moves in a Grid]({{< ref "2684.maximum-number-of-moves-in-a-grid.md" >}})
 
 ## 樹型
 [2646. Minimize the Total Price of the Trips]({{< ref "2646.Minimize-the-Total-Price-of-the-Trips.md" >}})
-
-# 

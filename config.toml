@@ -25,3 +25,19 @@ theme = 'hugo-theme-stack'
 
   [params.article]
     readingTime = false
+
+[markup]
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ''
+    hl_inline = false
+    lineAnchors = ''
+    lineNoStart = 1
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = true
+    noHl = false
+    style = 'monokai'
+    tabWidth = 4
