@@ -1,4 +1,4 @@
-baseURL = 'http://example.org/'
+baseURL = 'https://chunwenhsueh.gitlab.io/blog'
 languageCode = 'zh-TW'
 title = 'cwHsueh'
 theme = 'hugo-theme-stack'
