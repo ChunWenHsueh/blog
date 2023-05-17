@@ -12,10 +12,6 @@ theme = 'hugo-theme-stack'
     name = 'Home'
     url = '/'
     weight = 10
-#  [[menu.main]]
-#    name = 'About me'
-#    url = '/'
-#    weight = 20
 
 [params]
   mainSections = ["post"]
