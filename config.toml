@@ -1,7 +1,8 @@
-baseURL = 'https://chunwenhsueh.gitlab.io/blog'
+baseURL = 'https://cwhsueh.com/'
 languageCode = 'zh-TW'
 title = 'cwHsueh'
 theme = 'hugo-theme-stack'
+googleAnalytics = "G-8MRV1Z256B"
 
 [menu]
   [[menu.main]]
