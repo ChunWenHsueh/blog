@@ -80,7 +80,7 @@ $$
 \begin{align*}
 \text{state} &= 10\textcolor{red}{01}\textcolor{yellow}{111}0_2\\\\
 \text{c} &= 00000010_2\\\\
-\text{r} = \text{state} + \text{c} &= 10\textcolor{red}{01}0000_2\\\\
+\text{r} = \text{state} + \text{c} &= 10\textcolor{red}{10}0000_2\\\\
 \text{r \\^ state} &= 00\textcolor{red}{11}\textcolor{yellow}{111}0_2\\\\
 \text{((r \\^ state) / c) >> 2} &= 00000\textcolor{yellow}{111}_2\\\\
 \text{((r \\^ state) / c) >> 2 | r} &= 10\textcolor{red}{10}0\textcolor{yellow}{111}_2\\\\
