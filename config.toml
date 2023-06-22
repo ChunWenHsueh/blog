@@ -17,9 +17,9 @@ googleAnalytics = "G-8MRV1Z256B"
 [params]
   mainSections = ["post"]
 
-  [params.widgets]
-    enabled = ['search']
-
+  [[params.widgets.page]]
+    type = 'toc'
+  
   [params.article]
     readingTime = false
 
@@ -38,3 +38,7 @@ googleAnalytics = "G-8MRV1Z256B"
     noHl = false
     style = 'monokai'
     tabWidth = 4
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 5
+    ordered = true
