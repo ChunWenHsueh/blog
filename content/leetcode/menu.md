@@ -6,7 +6,7 @@ draft: false
 
 This is the leetcode menu.
 ## BFS
-[386. Lexicographical Numbers]({{< ref "386.Lexicographical-Numbers.md" >}})\
+[386. Lexicographical Numbers]({{< ref "386.Lexicographical-Numbers.md" >}})  
 [2662. Minimum Cost of a Path With Special Roads]({{< ref "2662.Minimum-Cost-of-a-Path-With-Special-Roads.md" >}})(未完成)
 
 ## Stack
@@ -23,12 +23,14 @@ This is the leetcode menu.
 
 ## Dynamic Programming
 ### 矩陣型
-[516.Longest Palindromic Subsequence]({{< ref "516.Longest-Palindromic-Subsequence.md" >}})\
-[1639. Number of Ways to Form a Target String Given a Dictionary]({{< ref "1639.Number-of-Ways-to-Form-a-Target-String-Given-a-Dictionary.md" >}})\
-[1799. Maximize Score After N Operations]({{< ref "1799.Maximize-Score-After-N-Operations.md" >}})\
-[2218. Maximum Value of K Coins From Piles]({{< ref "2218.Maximum-Value-of-K-Coins-From-Piles.md" >}})\
-[2684. Maximum Number of Moves in a Grid]({{< ref "2684.maximum-number-of-moves-in-a-grid.md" >}})\
+[516.Longest Palindromic Subsequence]({{< ref "516.Longest-Palindromic-Subsequence.md" >}})  
+[1639. Number of Ways to Form a Target String Given a Dictionary]({{< ref "1639.Number-of-Ways-to-Form-a-Target-String-Given-a-Dictionary.md" >}})  
+[2218. Maximum Value of K Coins From Piles]({{< ref "2218.Maximum-Value-of-K-Coins-From-Piles.md" >}})  
+[2684. Maximum Number of Moves in a Grid]({{< ref "2684.maximum-number-of-moves-in-a-grid.md" >}})  
 [2719. Count of Integers]({{< ref "2719.count-of-integers.md" >}})
 
 ### 樹型
 [2646. Minimize the Total Price of the Trips]({{< ref "2646.Minimize-the-Total-Price-of-the-Trips.md" >}})
+
+### bitmask
+[1799. Maximize Score After N Operations]({{< ref "1799.Maximize-Score-After-N-Operations.md" >}})  

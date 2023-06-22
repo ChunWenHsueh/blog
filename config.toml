@@ -19,6 +19,9 @@ googleAnalytics = "G-8MRV1Z256B"
 
   [[params.widgets.page]]
     type = 'toc'
+    
+  [params.widgets]
+    enabled = ['search']
   
   [params.article]
     readingTime = false
