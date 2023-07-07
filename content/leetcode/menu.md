@@ -5,6 +5,12 @@ draft: false
 ---
 
 This is the leetcode menu.
+## Binary Search
+[1970. Last Day Where You Can Still Cross]({{< ref "1970.last-day-where-you-can-still-cross.md" >}})  
+
+## Disjoint Set
+[1970. Last Day Where You Can Still Cross]({{< ref "1970.last-day-where-you-can-still-cross.md" >}})  
+
 ## Backtracking
 [2305. Fair Distribution of Cookies]({{< ref "2305.fair-distribution-of-cookies.md" >}})  
 ## BFS
