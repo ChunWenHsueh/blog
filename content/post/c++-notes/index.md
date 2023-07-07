@@ -6,6 +6,72 @@ math: true
 ---
 
 這篇文章主要是給自己看的，因此寫的方法是以自己看懂為主，一些自己已經會的東西就不會寫得太詳細。
+## The Cherno C++ series
+
+### static
+https://youtu.be/f3FVU-iwNuA  
+https://youtu.be/V-BFlMrBtqQ
+```c++
+// static.cpp
+static int s_variable = 1;;
+
+// main.cpp
+#include <iostream>
+
+int s_variable = 3;
+
+int main(){
+    std::cout << s_variable << std::endl; // 3
+    return 0;
+}
+```
+static.cpp 中的 s_variable 只能被 static.cpp 中的東西看到，所以並不會有 linking error。  
+在命名 global variable 的時候要很小心，因為一旦命名，其他所有的檔案就不能有此變數，不然就要加上 static。
+
+而 static 在 class 中則像是 class 的全域變數。
+```c++
+#include <iostream>
+
+class Entity{
+public:
+    static int x;
+};
+
+int Entity::x;
+
+int main(){
+    Entity e;
+    e.x = 1;
+    std::cout << e.x << std::endl;
+
+    Entity e2;
+    e2.x = 3; // e.x 也變成 3
+    std::cout << e.x << std::endl;
+    return 0;
+}
+```
+這些 static variable（或是 static function）是跟 class 綁在一起的，而不是 object。因此實務上要寫的話改成以下的方式會比較好，也比較直觀。
+```c++
+#include <iostream>
+
+class Entity{
+public:
+    static int x;
+    static void print(){
+        std::cout << x << std::endl;
+    }
+};
+
+int Entity::x;
+
+int main(){
+    Entity e; // 甚至可以不需要這一行，因為 static member 跟 object 無關
+    Entity::x = 1; // 不要寫 e.x = 1
+    Entity::print(); // 不要寫 e.print()
+    return 0;
+}
+```
+最後，static function 只能存取 static variables，畢竟 static 只跟 class 有關，跟 object 無關，要特別注意。
 ## OOP
 
 ### Encapsulation 封裝
@@ -158,8 +224,10 @@ class derived: public base {
 
 利用 base class 來對 derived class 進行操作。  
 好處在於管理物件的時候，可以直接用共同的 base class 來管理，而不需要用個別的 derived class 一個一個處理。  
-要注意的是，只能使用 base class 有的 member funcitons 來操作（如果 base class 跟 derived class 有名稱一樣的 function，也只會執行 base class 的 fucntion），如果想要在 derived class 進行 override，要在 base class 的 function 前面加上 `virtual`。  
-如果 base class 有 pure virtual function 的話，會變成 abstract class，沒辦法創造出此 class 的 object。而且 derived class 一定要 override，不然 derived class 也會變成 abstract class。  
+要注意的是，只能使用 base class 有的 member funcitons 來操作（如果 base class 跟 derived class 有名稱一樣的 function，也只會執行 base class 的 fucntion），如果想要在 derived class 進行 override，要在 base class 的 function 前面加上 `virtual`，並且可以在 derived class 的 function 後面加上 `override` 來增加可讀性以及方便除錯。  
+
+如果 base class 有 pure virtual function 的話，會變成 abstract class（或是叫做 interface），沒辦法創造出此 class 的 object。而且 derived class 一定要 override，不然 derived class 也會變成 abstract class，可以藉此來強制derived class 進行 override。  
+
 如果想要執行只在 derived class 的 function，可以使用 dynamic cast 來運行。
 
 ```c++
@@ -176,7 +244,7 @@ public:
 
 class derived: public base {
 public:
-    void info(){
+    void info() override { // void info() override 來增加可讀性以及方便除錯
         std::cout << "derived class object" << std::endl;
     }
 };
@@ -192,10 +260,10 @@ int main (){
     
     return 0;
 }
-
 ```
 
 ## 參考資料
 1. https://openhome.cc/Gossip/CppGossip/  
 2. https://youtu.be/wN0x9eZLix4  
 3. https://www.programiz.com/cpp-programming/public-protected-private-inheritance
+4. The Cherno C++ series https://www.youtube.com/@TheCherno
