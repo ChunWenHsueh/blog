@@ -1,11 +1,41 @@
 ---
 title: "C++ notes"
-date: 2023-06-22T20:00:00+08:00
+date: 2023-12-25 T20:00:00+08:00
 draft: false
 math: true
 ---
 
 這篇文章主要是給自己看的，因此寫的方法是以自己看懂為主，一些自己已經會的東西就不會寫得太詳細。
+
+## Source Code to Machine Code
+
+source code to machine code 分成四個步驟：
+1. preprocessing
+    - 處理 #，例如 #include
+    - 把 header file 複製到當前的檔案裡面
+2. compiling
+    - turn code into assembly
+3. assembling
+    - turn assembly into machine code, 0s and 1s
+4. linking
+    - 把不同檔案的 machine code 接在一起
+
+雖然說有四個步驟，但是其實會把這四個步驟叫做 compiling。
+
+## Command Line Arguments
+
+```c++
+int main(int argc, char *argv[]){ 
+}
+
+int main(int argc, char **argv){
+}
+```
+
+如果有一個 binary file 叫做 greet，並且在 terminal 輸入 `./greet Hello`，此時 `argc = 2, argv[0] = "./greet", argv[1] = "Hello"`。
+
+`echo $?` 會回傳來自 main funciton 的 int，也就是 error code。
+
 ## The Cherno C++ series
 
 ### static

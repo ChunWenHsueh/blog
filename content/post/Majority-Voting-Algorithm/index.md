@@ -8,7 +8,7 @@ math: true
 
 給定一個大小為 `n` 的整數陣列，如何找到出現頻率大於（必須嚴格大於）`n/2` 的元素？  
 例如：`arr = [1, 1, 2]`，那麼 `1` 就是出現頻率大於 `n/2` 的元素。  
-`arr = [1, 1, 3, 4]`，那麼不存在這樣的元素。
+如果 `arr = [1, 1, 3, 4]`，那麼不存在這樣的元素。
 
 Boyer–Moore majority vote algorithm
 
@@ -57,7 +57,48 @@ int majorityElement(vector<int>& nums) {
 
 例如：`arr = [1, 2, 2, 1, 1, 3, 1]`，可以配對成 `[1, 2], [1, 2], [1, 3]` 並且剩下 `[1]` 沒有配對到。
 
-這個演算法還有一個特殊的地方，就是如果要找到出現頻率大於 `n/3` 或是 `n/4` 的元素，可以用一樣的方法找。只需要增加候選人的人數，就可以用一樣的概念解決。
+這個演算法還有一個特殊的地方，就是如果要找到出現頻率大於 `n/3` 或是 `n/4` 的元素，可以用一樣的方法找。只需要增加候選人的人數，就可以用一樣的概念解決。此外，還需要再花 O(n) 的時間檢查 candidate 是否為 majority element。
+
+以下是找到出現頻率大於 `n/3` 的方法
+```c++
+int majorityElement(vector<int>& nums) {
+    int cand1 = 0, cand2 = 0, freq1 = 0, freq2 = 0;
+        int n = nums.size();
+        for (int i = 0; i < n; i++){
+            if (nums[i] == cand1){
+                freq1++;
+            }
+            else if (nums[i] == cand2){
+                freq2++;
+            }
+            else if (freq1 == 0){
+                cand1 = nums[i];
+                freq1 = 1;
+            }
+            else if (freq2 == 0){
+                cand2 = nums[i];
+                freq2 = 1;
+            }
+            else {
+                freq1--;
+                freq2--;
+            }
+        }
+        freq1 = 0, freq2 = 0;
+        for (int i = 0; i < n; i++){
+            freq1 += nums[i] == cand1;
+            freq2 += nums[i] == cand2;
+        }
+        vector<int> res;
+        if (freq1 > n / 3){
+            res.push_back(cand1);
+        }
+        if (freq2 > n / 3 && cand1 != cand2){
+            res.push_back(cand2);
+        }
+        return res;
+}
+```
 
 參考資料
 
