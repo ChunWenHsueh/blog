@@ -1,6 +1,6 @@
 ---
 title: "C++ notes"
-date: 2023-12-25 T20:00:00+08:00
+date: 2023-12-25T20:00:00+08:00
 draft: false
 math: true
 ---
