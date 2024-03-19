@@ -998,206 +998,7 @@ ostream& operator<<(ostrream &os, const Time &t){
 
 ### A Vector Class
 
-```c++
-// vect.h -- Vector class with <<, mode state
-#ifndef VECTOR_H_
-#define VECTOR_H_
-#include <iostream>
-namespace VECTOR
-{
-    class Vector
-    {
-    public:
-        enum Mode {RECT, POL};
-    // RECT for rectangular, POL for Polar modes
-    private:
-        double x; // horizontal value
-        double y; // vertical value
-        double mag; // length of vector
-        double ang; // direction of vector in degrees
-        Mode mode; // RECT or POL
-        // private methods for setting values
-        void set_mag();
-        void set_ang();
-        void set_x();
-        void set_y();
-    public:
-        Vector();
-        Vector(double n1, double n2, Mode form = RECT);
-        void reset(double n1, double n2, Mode form = RECT);
-        ~Vector();
-        double xval() const {return x;} // report x value
-        double yval() const {return y;} // report y value
-        double magval() const {return mag;} // report magnitude
-        double angval() const {return ang;} // report angle
-        void polar_mode(); // set mode to POL
-        void rect_mode(); // set mode to RECT
-        // operator overloading
-        Vector operator+(const Vector & b) const;
-        Vector operator-(const Vector & b) const;
-        Vector operator-() const;
-        Vector operator*(double n) const;
-        // friends
-        friend Vector operator*(double n, const Vector & a);
-        friend std::ostream &
-        operator<<(std::ostream & os, const Vector & v);
-    };
-} // end namespace VECTOR
-#endif
-
-// vect.cpp -- methods for the Vector class
-#include <cmath>
-#include "vect.h" // includes <iostream>
-using std::sqrt;
-using std::sin;
-using std::cos;
-using std::atan;
-using std::atan2;
-using std::cout;
-namespace VECTOR
-{
-    // compute degrees in one radian
-    const double Rad_to_deg = 45.0 / atan(1.0);
-    // should be about 57.2957795130823
-    // private methods
-    // calculates magnitude from x and y
-    void Vector::set_mag()
-    {
-        mag = sqrt(x * x + y * y);
-    }
-    void Vector::set_ang()
-    {
-        if (x == 0.0 && y == 0.0)
-            ang = 0.0;
-        else
-            ang = atan2(y, x);
-    }
-    // set x from polar coordinate
-    void Vector::set_x()
-    {
-        x = mag * cos(ang);
-    }
-    // set y from polar coordinate
-    void Vector::set_y()
-    {
-        y = mag * sin(ang);
-    }
-    // public methods
-    Vector::Vector() // default constructor
-    {
-        x = y = mag = ang = 0.0;
-        mode = RECT;
-    }
-    // construct vector from rectangular coordinates if form is r
-    // (the default) or else from polar coordinates if form is p
-    Vector::Vector(double n1, double n2, Mode form)
-    {
-        mode = form;
-        if (form == RECT)
-        {
-            x = n1;
-            y = n2;
-            set_mag();
-            set_ang();
-        }
-        else if (form == POL)
-        {
-            mag = n1;
-            ang = n2 / Rad_to_deg;
-            set_x();
-            set_y();
-        }
-        else
-        {
-            cout << "Incorrect 3rd argument to Vector() -- ";
-            cout << "vector set to 0\n";
-            x = y = mag = ang = 0.0;
-            mode = RECT;
-        }
-    }
-    // reset vector from rectangular coordinates if form is
-    // RECT (the default) or else from polar coordinates if
-    // form is POL
-    void Vector:: reset(double n1, double n2, Mode form)
-    {
-        mode = form;
-        if (form == RECT)
-        {
-            x = n1;
-            y = n2;
-            set_mag();
-            set_ang();
-        }
-        else if (form == POL)
-        {
-            mag = n1;
-            ang = n2 / Rad_to_deg;
-            set_x();
-            set_y();
-        }
-        else
-        {
-            cout << "Incorrect 3rd argument to Vector() -- ";
-            cout << "vector set to 0\n";
-            x = y = mag = ang = 0.0;
-            mode = RECT;
-        }
-    }
-    Vector::~Vector() // destructor
-    {
-    }
-    void Vector::polar_mode() // set to polar mode
-    {
-        mode = POL;
-    }
-    void Vector::rect_mode() // set to rectangular mode
-    {
-        mode = RECT;
-    }
-    // operator overloading
-    // add two Vectors
-    Vector Vector::operator+(const Vector & b) const
-    {
-        return Vector(x + b.x, y + b.y);
-    }
-    // subtract Vector b from a
-    Vector Vector::operator-(const Vector & b) const
-    {
-        return Vector(x - b.x, y - b.y);
-    }
-    // reverse sign of Vector
-    Vector Vector::operator-() const
-    {
-        return Vector(-x, -y);
-    }
-    // multiply vector by n
-    Vector Vector::operator*(double n) const
-    {
-        return Vector(n * x, n * y);
-    }
-    // friend methods
-    // multiply n by Vector a
-    Vector operator*(double n, const Vector & a)
-    {
-        return a * n;
-    }
-    // display rectangular coordinates if mode is RECT,
-    // else display polar coordinates if mode is POL
-    std::ostream & operator<<(std::ostream & os, const Vector & v)
-    {
-    if (v.mode == Vector::RECT)
-        os << "(x,y) = (" << v.x << ", " << v.y << ")";
-    else if (v.mode == Vector::POL)
-    {
-        os << "(m,a) = (" << v.mag << ", "
-        << v.ang * Rad_to_deg << ")";
-    }
-    else
-        os << "Vector object mode is invalid";
-        return os;
-    }
-} // end namespace VECTOR
-```
+[Vector class]({{< ref "/code/vector" >}}) 
 
 ### Automatic Conversions and Type Casts for Classes
 
@@ -1320,5 +1121,213 @@ std::ostream & operator<<(std::ostream & os, const StringBad & st)
 
 Notice that we initializes the static `num_strings` member to `0` in the `.cpp` file instead of the header file. That's because we cannot initialize a static member variable inside the class declaration. Declaration only tells how to allocate the memory, but it doesn't allocate memory. For static members, we need to initialize outside the class declaration (but not `const static`).
 
+The `StringBad` class seems fine, however, there's actually some problems. Let's look at an example:
+
+```c++
+void callme(StringBad sb){
+    cout << "String passed by value:\n";
+    cout << " \"" << sb << "\"\n";
+}
+
+StringBad headline("Celery Stalks at Midnight");
+callme(headline);
+cout << headline << endl; // print out something strange
+```
+
+When we pass by value, the function will create a temporary `StringBad` object that points to the same address as the `headline` does. After the `callme` function, the destructor will be called, causing the pointer to be released, which messes up the original string.
+
 ### Special Member Functions
 
+The problems with the `StringBad` class stem from $special$ $member$ $functions$. C++ provides the following member functions:
+
+* A default constructor if you define no constructors
+* A default destructor if you don’t define one
+* A copy constructor if you don’t define one
+* An assignment operator if you don’t define one
+* An address operator if you don’t define one
+
+#### Default Constructor
+
+If we omit any constructors, the compiler will call the default constructor. If we define a constructor with no arguments, or its arguments have default values, it will become the default constructor.
+
+However, we can have only one default constructor; otherwise, there will be ambiguity.
+
+```c++
+Class_name(){}; // default constructor
+Class_name(){ // default constructor with no arguments
+    member = 0;
+}
+Class_name(){int n = 0}{ // default constructor with default argument value
+    member = n;
+}
+```
+
+#### Copy Constructor
+
+A copy constructor for a class normally has this prototype: `Class_name(const Class_name &);`. The default copy constructor performs a member-by-member copy of the nonstatic members. Each member is copied by value.
+
+A copy constructor is invoked whenever a new object is created and initialized to an existing object of the same kind.
+
+```c++
+// given that motto is a StringBad object
+StringBad ditto(motto); // calls StringBad(const StringBad &)
+StringBad metoo = motto; // calls StringBad(const StringBad &)
+StringBad also = StringBad(motto); // calls StringBad(const StringBad &)
+StringBad * pStringBad = new StringBad(motto); // calls StringBad(const StringBad &)
+```
+
+The middle two declarations may use a copy constructor directly to create `metoo` and `also`, or they may use a copy constructor to generate temporary objects whose contents are then assigned to `metoo` and `also`.
+
+##### Back to Stringbad: Where the Copy Constructor Goes Wrong
+
+The `callme` function creates a temporary variable that invokes the copy constructor, and this variable points to the same address as our original object. We should provide a copy constructor for the `StringBad` class.
+
+```c++
+StringBad::StringBad(const StringBad & st)
+{
+    num_strings++; // handle static member update
+    len = st.len; // same length
+    str = new char [len + 1]; // allot space
+    std::strcpy(str, st.str); // copy string to new location
+    cout << num_strings << ": \"" << str
+    << "\" object created\n"; // For Your Information
+}
+```
+
+#### Assignment Operator
+
+Assignment Operator has the following prototype:`Class_name & Class_name::operator=(const Class_name &);`.
+
+
+An overloaded assignment operator is used when you assign one object to another existing object:
+
+```c++
+StringBad headline("Celery Stalks at Midnight");
+StringBad knot;
+knot = headline; // assignment operator invoked
+```
+
+Like a copy constructor,an implicit implementation of an assignment operator performs a member-to-member copy.
+
+##### Back to Stringbad: Where the Assignment Goes Wrong
+
+We should also provide a assignment operator for the `StringBad` class. The implementation is similar to that of the copy constructor, but there are some differences:
+
+* Use `delete []` to free the old string
+* The function should protect against assigning an object to itself
+* The function returns a reference to the invoking object
+
+Here is the implementation:
+
+```c++
+StringBad & StringBad::operator=(const StringBad & st)
+{
+    if (this == &st) // object assigned to itself
+        return *this; // all done
+    delete [] str; // free old string
+    len = st.len;
+    str = new char [len + 1]; // get space for new string
+    std::strcpy(str, st.str); // copy the string
+    return *this; // return reference to invoking object
+}
+``` 
+
+### The New, Improved `String` Class
+
+We still need a few functions to improve the `String` class, such as comparison members or bracket notation.
+
+Here is an improved `String` class:  
+[String class]({{< ref "/code/string" >}}) 
+
+For static class member functions, it can only use static data members, since it is not associated with a particular object.
+
+We added `String & String::operator=(const char * s)` to improve efficiency. Consider the following code:
+
+```c++
+String name;
+char temp[40];
+cin.getline(temp, 40);
+name = temp; // use constructor to convert type
+```
+
+The program will do the following steps:
+
+* Use `String(const char *)` constructor to construct a temporary `String` object
+* Use `String & String::operator=(const String &)` to copy the object to `name`
+* call `~String()` destructor to delete the temporary object
+
+Which is slower than copying the C string directly to the `String` object.
+
+### Looking Again at Placement `new`
+
+Using placement `new` is different from using regular `new` to allocate memory for objects. If we want to destroy the object that was allocated by placement `new`, we must call the destructor explicitly to do so.
+
+```c++
+char * buffer = new char[512]; // get a block of memory
+MyClass *ptr;
+ptr = new (buffer) MyClass; // place object in buffer
+ptr->~MyClass(); // call the destructor explicitly
+delete [] buffer; // Free the raw memory allocated earlier
+```
+
+We have to call the destructor instead of delete. The reason is that `delete` does two things:
+
+* It calls the destructor of the object
+* It attempts to free the memory where the object was located
+
+However, when using the placement `new`, the memory location is provided by us, and therefore `delete` might not know how to correctly deallocate it, leading to undefined behavior.
+
+### Member Initializer List
+
+Let's say we have a class that looks like this:
+
+```c++
+class Queue{
+private:
+    enum {Size = 10};
+    Node * front; // pointer to front of Queue
+    Node * rear; // pointer to rear of Queue
+    int items; // current number of items in Queue
+    const int qsize; // maximum number of items in Queue
+public:
+    Queue(int qs)
+    {
+        front = rear = NULL;
+        items = 0;
+        qsize = qs; // not acceptable!
+    }
+};
+```
+
+We want to assign `qs` to the `qsize` variable, however, `const` variable can only be initialized to a value, not assigned to a value.
+
+Calling a constructor creates an object before the code within the brackets is executed. Thus, the constructor will first allocate space for the four member variables, then enter the brackets and assign values into allocated space.
+
+We can use $member$ $initializer$ $list$ syntax to initialize member variables.
+
+```c++
+Queue(int qs) : qsize(qs) // initialize qsize to qs, instead of assigning
+{
+    front = rear = NULL;
+    items = 0;
+}
+// or
+Queue(int qs) : qsize(qs), front(NULL), rear(NULL), items(0)
+{
+}
+```
+Only constructors can use this initializer-list syntax. We also have to use it for class members that are declared as references.
+
+In-class initialization is equivalent to using a member initialization list in the constructors:
+
+```c++
+class Classy{
+    int mem1 = 10; // in-class initialization
+}
+// is equivalent to
+Classy(): mem1(10){
+    ...
+}
+```
+
+## Chapter 13: Class Inheritance
