@@ -1331,3 +1331,108 @@ Classy(): mem1(10){
 ```
 
 ## Chapter 13: Class Inheritance
+
+### Beginning with a Simple Base Class
+
+```c++
+// tabtenn0.h -- a table-tennis base class
+#ifndef TABTENN0_H_
+#define TABTENN0_H_
+#include <string>
+using std::string;
+// simple base class
+class TableTennisPlayer
+{
+private:
+    string firstname;
+    string lastname;
+    bool hasTable;
+public:
+    TableTennisPlayer (const string & fn = "none",
+        const string & ln = "none", bool ht = false);
+    void Name() const;
+    bool HasTable() const { return hasTable; };
+    void ResetTable(bool v) { hasTable = v; };
+};
+#endif
+
+//tabtenn0.cpp -- simple base-class methods
+#include "tabtenn0.h"
+#include <iostream>
+TableTennisPlayer::TableTennisPlayer (const string & fn,
+    const string & ln, bool ht) : firstname(fn),
+        lastname(ln), hasTable(ht) {}
+
+void TableTennisPlayer::Name() const
+{
+    std::cout << lastname << ", " << firstname;
+}
+```
+
+Now we can create `RatedPlayer` class that derives from the `TableTennesPlayer` base class:
+
+```c++
+// RatedPlayer derives from the TableTennisPlayer base class
+class RatedPlayer : public TableTennisPlayer
+{
+private:
+    unsigned int rating; // add a data member
+public:
+    RatedPlayer (unsigned int r = 0, const string & fn = "none",
+        const string & ln = "none", bool ht = false);
+    RatedPlayer(unsigned int r, const TableTennisPlayer & tp);
+    unsigned int Rating() const { return rating; } // add a method
+    void ResetRating (unsigned int r) {rating = r;} // add a method
+};
+```
+
+With public derivation, the public members of the base class become public members of the derived class. The private portions of a base class become part of the derived class, but they can be accessed only through public and protected methods of the base class.
+
+### Constructors
+
+When a program constructs a derived-class object, it first constructs the base-class object. We must use member initailizer list syntax to construct base-class object before we enter the body of the derived-class constructor.
+
+```c++
+RatedPlayer::RatedPlayer(unsigned int r, const string & fn,
+    const string & ln, bool ht) : TableTennisPlayer(fn, ln, ht)
+{
+    rating = r;
+}
+```
+
+We we omit calling a base-class constructor, the program uses the default constructor.
+
+```c++
+RatedPlayer::RatedPlayer(unsigned int r, const string & fn,
+    const string & ln, bool ht)
+{
+    rating = r;
+}
+// is same as
+RatedPlayer::RatedPlayer(unsigned int r, const string & fn,
+    const string & ln, bool ht) : TableTennisPlayer()
+{
+    rating = r;
+}
+```
+
+### Special Relationships Between Derived and Base Classes
+
+A base-class pointer can point to a derivedclass object without an explicit type cast and that a base-class reference can refer to a derived-class object without an explicit type cast.
+
+```c++
+RatedPlayer player1(1140, "Mallory", "Duck", true);
+TableTennisPlayer & rt = player;
+TableTennisPlayer * pt = &player;
+rt.Name(); // invoke Name() with reference
+pt->Name(); // invoke Name() with pointer
+
+TableTennisPlayer player2(player1);
+// The exact match should be TableTennisPlayer(const RatedPlayer &) that doesn't exist
+// but there is the implicit copy constructor TableTennisPlayer(const TableTennisPlayer &)
+```
+
+However,a base-class pointer or reference can invoke just base-class methods, not derived-class methods.
+
+### Polymorphic Public Inheritance
+
