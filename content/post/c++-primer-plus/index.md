@@ -1436,3 +1436,108 @@ However,a base-class pointer or reference can invoke just base-class methods, no
 
 ### Polymorphic Public Inheritance
 
+`virtual` determines which method is used if the method is invoked by a reference or a pointer instead of by an object. If you don’t use the keyword virtual, the program chooses a method based on the reference type or pointer type.
+
+For example, if we have a base-class `Brass` and a derived-class `BrassPlus`, and a virtual function `ViewAcct()` for both classes.
+
+```c++
+Brass dom("Dominic Banker", 11224, 4183.45);
+BrassPlus dot("Dorothy Banker", 12118, 2592.00);
+dom.ViewAcct(); // use Brass::ViewAcct()
+dot.ViewAcct(); // use BrassPlus::ViewAcct()
+
+Brass &b1_ref = dom;
+Brass &b2_ref = dot;
+b1_ref.ViewAcct(); // use Brass::ViewAcct()
+b2_ref.ViewAcct(); // use BrassPlus::ViewAcct()
+```
+
+If we don't have `virtual` keyword for the function, the reference will use `Brass::ViewAcct()` in both line of code.
+
+When a method is declared virtual in a base
+class, it is automatically virtual in the derived class, but it is a good idea to document which functions are virtual by using the keyword `virtual` in the derived class declarations. 
+
+### The Need for Virtual Destructors
+
+It's also the usual practice to declare a virtual destructor for the base class. It ensures that the correct sequence of destructors is called.
+
+```c++
+Brass *ptr = new BrassPlus();
+delete ptr; // calls BrassPlus destructor
+// then automatically calls the base-class destructor
+```
+
+### How Virtual Functions Work
+
+![Example image](/post/images/primer-plus-13.5.png)
+
+The usual way compilers handle virtual functions is to add a hidden member to each object.The hidden member holds a pointer to an array of function addresses. Such an array is usually termed a virtual function table (vtbl). When we call a virtual function, the program looks at the vtbl address stored in an object and goes to the corresponding table of function addresses.
+
+In short, using virtual functions has the following modest costs in memory and execution speed:
+
+* Each object has its size increased by the amount needed to hold an address
+* For each class, the compiler creates a table (an array) of addresses of virtual functions
+* For each function call, there's an extra step of going to a table to look up an address
+
+### Redefinition Hides Methods
+
+Suppose we create something like the following:
+
+```c++
+class Dwelling
+{
+public:
+    virtual void showperks(int a) const;
+...
+};
+class Hovel : public Dwelling
+{
+public:
+    virtual void showperks() const;
+...
+};
+
+Hovel trump;
+trump.showperks(); // valid
+trump.showperks(5); // invalid
+```
+
+The new `showperks()` function that takes no arguments will hide the base class version that takes an `int` argument (it actually hides all base-class methods of the same name), instead of overloading the function.
+
+If the base class declaration is overloaded, we need to redefine all the base-class version in the derived class.
+
+```c++
+class Dwelling
+{
+public:
+    // three overloaded showperks()
+    virtual void showperks(int a) const;
+    virtual void showperks(double x) const;
+    virtual void showperks() const;
+    ...
+};
+class Hovel : public Dwelling
+{
+public:
+    // three redefined showperks()
+    virtual void showperks(int a) const;
+    virtual void showperks(double x) const;
+    virtual void showperks() const;
+    ...
+};
+```
+
+If we redefine just one version, the other two become hidden and cannot be used by objects of the derived class.
+
+### Access Control: `protected`
+
+The `protected` keyword is like `private` in outside world and `public` for derived class. It's useful for derived class to access to internal functions that are not available publicly.
+
+### Abstract Base Classes (ABC)
+
+Suppose we want to create two classes, `Circle` and `Ellipse`. Of course we can first write the `Ellipse` class and then write the `Circle` class by inheriting the `Ellipse` class, since a circle $is-a$ ellipse. However, this derivation is awkward, because circle is simpler than ellipse. It seems simpler to define a `Circle` class without using inheritance.
+
+The useful thing about ABC is that we can extract the same part of circle and ellipse, and derive the `Circle` and `Ellipse` classes from the ABC. For the different part of circle and ellipse, we can create pure virtual functions in ABC and let derived class to override them.
+
+When a class contains a pure virtual function, we can't create an object of that class. C++ allows even a pure virtual funciton to have a definition. We can make the prototype virtual but still provide a definition in the implementation file.
+
