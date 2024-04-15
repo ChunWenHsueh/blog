@@ -450,7 +450,7 @@ For a given function name, you can have a non template function,a template funct
 
 ### Instantiations and Specializations
 
-When the compiler uses the template to generate a funciton for a particular type, we call it $instantiation$ of the template. If we write this:
+When the compiler uses the template to generate a funciton for a particular type, we call it ***instantiation*** of the template. If we write this:
 
 ```c++
 template <typename T>
@@ -466,9 +466,9 @@ Swap(i, j); // i, j are int type
 ...
 ```
 
-Then this is called $implicit instantiation$. The compiler creates a function `Swap()` for `int` type because the program uses `Swap()` with `int` parameters.
+Then this is called ***implicit instantiation***. The compiler creates a function `Swap()` for `int` type because the program uses `Swap()` with `int` parameters.
 
-There is also $ explicit instantiation$, which means that we can tell the compiler to generate a function for specific type for us.
+There is also ***explicit instantiation***, which means that we can tell the compiler to generate a function for specific type for us.
 
 ```c++
 template void Swap<int>(int, int); // explicit instantiation
@@ -934,7 +934,7 @@ Now we can simply write `time1 + time2` instead of `time1.add(time2)`, and it wi
 
 There are still some restrictions when overloading operators. For example, if we overload the `*` operator and write `time1 * 2.5`, it translates to `time1.operator*(2)`. However, `2.5 * time1` does not correspond to a member function since `2.5` is not a `Time` object.
 
-We can write a nonmember function `Time operator*(double m, const Time &t)` to resolve this, but it raises a new problem: nonmember functions cannot access private data in a class. There is a special category of nonmenber functions, called $friends$, that can access private members of a class.
+We can write a nonmember function `Time operator*(double m, const Time &t)` to resolve this, but it raises a new problem: nonmember functions cannot access private data in a class. There is a special category of nonmenber functions, called ***friends***, that can access private members of a class.
 
 ### Creating Friends
 
@@ -1019,7 +1019,7 @@ mycat = Stonewt(19.6); // ok, an explicit conversion
 mycat = (Stonewt) 19.6; // ok, old form for explicit typecast
 ```
 
-* A special class member operator function called a $conversion function$ serves as an instruction for converting a class object to some other type. This conversion function is invoked automatically when you assign a class object to a variable of that type or use the type cast operator to that type.
+* A special class member operator function called a ***conversion function*** serves as an instruction for converting a class object to some other type. This conversion function is invoked automatically when you assign a class object to a variable of that type or use the type cast operator to that type.
 
 ```c++
 class Stonewt
@@ -1138,7 +1138,7 @@ When we pass by value, the function will create a temporary `StringBad` object t
 
 ### Special Member Functions
 
-The problems with the `StringBad` class stem from $special$ $member$ $functions$. C++ provides the following member functions:
+The problems with the `StringBad` class stem from ***special member functions***. C++ provides the following member functions:
 
 * A default constructor if you define no constructors
 * A default destructor if you don’t define one
@@ -1303,7 +1303,7 @@ We want to assign `qs` to the `qsize` variable, however, `const` variable can on
 
 Calling a constructor creates an object before the code within the brackets is executed. Thus, the constructor will first allocate space for the four member variables, then enter the brackets and assign values into allocated space.
 
-We can use $member$ $initializer$ $list$ syntax to initialize member variables.
+We can use ***member initializer list*** syntax to initialize member variables.
 
 ```c++
 Queue(int qs) : qsize(qs) // initialize qsize to qs, instead of assigning
@@ -1329,6 +1329,8 @@ Classy(): mem1(10){
     ...
 }
 ```
+
+The items are initialized in the order which they are decalred, not in the order in which they appear in the initializer list.
 
 ## Chapter 13: Class Inheritance
 
@@ -1535,9 +1537,206 @@ The `protected` keyword is like `private` in outside world and `public` for deri
 
 ### Abstract Base Classes (ABC)
 
-Suppose we want to create two classes, `Circle` and `Ellipse`. Of course we can first write the `Ellipse` class and then write the `Circle` class by inheriting the `Ellipse` class, since a circle $is-a$ ellipse. However, this derivation is awkward, because circle is simpler than ellipse. It seems simpler to define a `Circle` class without using inheritance.
+Suppose we want to create two classes, `Circle` and `Ellipse`. Of course we can first write the `Ellipse` class and then write the `Circle` class by inheriting the `Ellipse` class, since a circle ***is-a*** ellipse. However, this derivation is awkward, because circle is simpler than ellipse. It seems simpler to define a `Circle` class without using inheritance.
 
 The useful thing about ABC is that we can extract the same part of circle and ellipse, and derive the `Circle` and `Ellipse` classes from the ABC. For the different part of circle and ellipse, we can create pure virtual functions in ABC and let derived class to override them.
 
 When a class contains a pure virtual function, we can't create an object of that class. C++ allows even a pure virtual funciton to have a definition. We can make the prototype virtual but still provide a definition in the implementation file.
 
+### Inheritance and Dynamic Memory Allocation
+
+When both the base class and the derived class use dynamic memory allocation, the derived-class destructor, copy constructor,and assignment operator all must use their base-class counterparts to handle the base-class component.
+
+For a destructor, it is done automatically.
+
+```c++
+baseDMA::~baseDMA() // takes care of baseDMA stuff
+{
+    delete [] label;
+}
+hasDMA::~hasDMA() // takes care of hasDMA stuff
+{
+    delete [] style;
+}
+```
+
+For a copy constructor, it is accomplished by invoking the base-class copy constructor in the member initialization list, or else the default constructor is invoked automatically.
+
+```c++
+baseDMA::baseDMA(const baseDMA & rs)
+{
+    label = new char[std::strlen(rs.label) + 1];
+    std::strcpy(label, rs.label);
+    rating = rs.rating;
+}
+
+hasDMA::hasDMA(const hasDMA & hs): baseDMA(hs)
+{
+    style = new char[std::strlen(hs.style) + 1];
+    std::strcpy(style, hs.style);
+}
+```
+
+For the assignment operator, it is accomplished by using the scope-resolution operator in an explicit call of the base-class assignment operator.
+
+```c++
+baseDMA & baseDMA::operator=(const baseDMA & rs)
+{
+    if (this == &rs)
+        return *this;
+    delete [] label;
+    label = new char[std::strlen(rs.label) + 1];
+    std::strcpy(label, rs.label);
+    rating = rs.rating;
+    return *this;
+}
+
+hasDMA & hasDMA::operator=(const hasDMA & hs)
+{
+    if (this == &hs)
+        return *this;
+    baseDMA::operator=(hs); // copy base portion, same as *this = hs
+    delete [] style; // prepare for new style
+    style = new char[std::strlen(hs.style) + 1];
+    std::strcpy(style, hs.style);
+    return *this;
+}
+```
+
+## Chapter 14: Reusing Code in C++
+
+### Private Inheritance
+
+We use public inheritance to create ***is-a*** relationship, however, when we use private inheritance, it creates ***has-a*** relationship.
+
+It seems weird to use a private inheritance, since we have no right to access base class methods in the outside world, but actually, the derived class contains all the members and data of the base class, so it creates ***has-a*** relationship.
+
+#### `Student` Class Example
+
+Let's say we want to create a `Student` class, the class should contain a string member and a valarray member. We could use containment to do so, but try private inheritance in here.
+
+```c++
+class Student : private std::string, private std::valarray<double>
+{
+public:
+    ...
+};
+```
+
+We don't need to create private data in the `Student` class, it's because the two inherited base class already provide all the needed data members.
+
+#### Initializing Base-Class Components
+
+```c++
+// containment
+Student(const char * str, const double * pd, int n)
+: name(str), scores(pd, n) {} // use object names for containment
+
+// private inheritance
+Student(const char * str, const double * pd, int n)
+: std::string(str), std::valarray<double>(pd, n) {} // use class names for inheritance
+```
+
+#### Accessing Base-Class Methods
+
+Containment adds an object to a class as a named member object, and we use the variable name as a interface to access the class. Private inheritance provides the same feature as containment, but only without the interface, however, inheritance lets you use the class name and the scope-resolution operator to invoke base-class methods:
+
+```c++
+// containment
+double Student::Average() const
+{
+    if (scores.size() > 0)
+        return scores.sum()/scores.size();
+    else
+        return 0;
+}
+
+// private inheritance
+double Student::Average() const
+{
+    if (ArrayDb::size() > 0)
+        return ArrayDb::sum()/ArrayDb::size();
+    else 
+        reutrn 0;
+}
+```
+
+#### Accessing Base-Class Objects
+
+The way to access base-class objects is to use a type cast. Because `Student` is derived from a `string`, it's possible to type cast a `Student` object to a `string` object.
+
+```c++
+const string & Student::Name() const
+{
+    return (const string &) *this;
+}
+```
+
+#### Accessing Base-Class Friends
+
+We use explicit type cast to invoke the correct functions. This is basically the same technique used to access a base-class object in a class method.
+
+```c++
+ostream & operator<<(ostream & os, const Student & stu)
+{
+    os << "Scores for " << (const String &) stu << ":\n";
+...
+}
+```
+
+`<< (const String &) stu` converts `stu` to a `string` object, then invokes the `operator<<(ostream &, const string &)` function.
+
+#### The revised `Student` class
+
+[Student]({{< ref "/code/c++_primer_plus_studenti" >}}) 
+
+#### Containment or Private Inheritance?
+
+Both containment and private inheritance can create ***has-a*** relationship, but which one should we use? In general, we should use containment to model a ***has-a*** relationship, and use private inheritance if the new class needs to access protected members in the original class or if it needs to redefine virtual functions.
+
+#### Protected Inheritance
+
+With protected inheritance, public and protected members of a base class become protected members of the derived class. The main difference between private and protected inheritance is when we derive another class from a derived class. 
+
+#### Redefining Access with `using`
+
+Suppose we want to make a particular base-class method available publicly in the derived class. A easy way is to define a derived-class method that uses the base-class method. For example:
+
+```c++
+double Student::sum() const // public Student method
+{
+    return std::valarray<double>::sum(); // use privately-inherited method
+}
+```
+
+Another way is to use a `using` declaration. For example:
+
+```c++
+class Student : private std::string, private std::valarray<double>
+{
+    ...
+public:
+    using std::valarray<double>::min;
+    using std::valarray<double>::max;
+    ...
+};
+```
+
+The using declaration makes the `valarray<double>::min()` and `valarray<double>::max()` methods available as if they were public Student methods.
+
+### Multiple Inheritance
+
+Let's say we have a base class called `Worker`, and two derived class, `Singer` and `Waiter`. We can derive a `SingingWaiter` class from `Singer` and `Waiter` class:
+
+```c++
+class SingingWaiter : public Waiter, public Singer {...};
+```
+
+This is called multiple inheritance (MI).
+
+MI can cause new problems.
+
+* inheriting different methods with the same name from two different base classes
+* inheriting nultiple instances of a class via two or more related immediate base class (`SingingWaiter` class encounters)
+
+Let's look at an example.
