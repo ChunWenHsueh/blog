@@ -1471,7 +1471,7 @@ delete ptr; // calls BrassPlus destructor
 
 ### How Virtual Functions Work
 
-![Example image](/post/images/primer-plus-13.5.png)
+![Example image](/images/primer-plus-13.5.png)
 
 The usual way compilers handle virtual functions is to add a hidden member to each object.The hidden member holds a pointer to an array of function addresses. Such an array is usually termed a virtual function table (vtbl). When we call a virtual function, the program looks at the vtbl address stored in an object and goes to the corresponding table of function addresses.
 
@@ -1740,3 +1740,560 @@ MI can cause new problems.
 * inheriting nultiple instances of a class via two or more related immediate base class (`SingingWaiter` class encounters)
 
 Let's look at an example.
+
+[Worker0]({{< ref "/code/c++_primer_plus_worker0" >}})
+
+The main difference between `Singer` and `Worker` class is the `Show` function. What will happen if we call the `Show` function in `SingingWaiter` class?
+
+#### How Many Workers?
+
+`SingingWaiter` winds up two `Worker` components. 
+
+![Example image](/images/primer-plus-14.4.png)
+
+We can assign the address of a derived-class object to a base-class pointer, however, this does not work in MI, since it's ambiguous now. We should specify which `Worker` we are pointing at:
+
+```c++
+SingingWaiter ed;
+Worker * pw = &ed; // ambiguous
+Worker * pw1 = (Waiter *) &ed; // the Worker in Waiter
+Worker * pw2 = (Singer *) &ed; // the Worker in Singer
+```
+
+#### Virtual Base Classes
+
+Virtual base classes allow an object derived from multiple bases that themselves share a common base to inherit just one object of that shared base class.
+
+We would make `Worker` a virtual base class to `Singer` and `Waiter` by using the keyword
+`virtual` in the class declarations:
+
+```c++
+// both order is valid
+class Singer : virtual public Worker {...};
+class Waiter : public virtual Worker {...};
+// define SingingWaiter as before
+class SingingWaiter: public Singer, public Waiter {...};
+```
+
+#### New Constructor Rules
+
+C++ disables the automatic passing of information through an intermediate class to a base class if the base class is virtual. We have to call the virtual base class constructor explicitly.
+
+```c++
+// wk will not be pass down to base class constructor, it will use default base class constructor
+SingingWaiter(const Worker & wk, int p = 0, int v = Singer::other)
+: Waiter(wk,p), Singer(wk,v) {} // flawed
+// the correct way to initialize, this will work only if we have virtual base class
+SingingWaiter(const Worker & wk, int p = 0, int v = Singer::other)
+: Worker(wk), Waiter(wk,p), Singer(wk,v) {}
+```
+
+#### Which Method?
+
+Use scope-resolution operator to clarify which funciton we want to invoke.
+
+```c++
+SingingWaiter newhire("Elise Hawks", 2005, 6, soprano);
+newhire.Show(); // ambiguous
+SingingWaiter newhire("Elise Hawks", 2005, 6, soprano);
+newhire.Singer::Show(); // use Singer version
+```
+
+A better way is to redefine `Show()` for `SingingWaiter` and specify which `Show()` to use (or use both).
+
+However, the `Show()` function is an increment approach.
+
+```c++
+void Worker::Show() const
+{
+    cout << "Name: " << fullname << "\n";
+    cout << "Employee ID: " << id << "\n";
+}
+void Waiter::Show() const
+{
+    cout << "Category: waiter\n";
+    Worker::Show();
+    cout << "Panache rating: " << panache << "\n";
+}
+void Singer::Show() const
+{
+    cout << "Category: singer\n";
+    Worker::Show();
+    cout << "Vocal range: " << pv[voice] << endl;
+}
+```
+
+We can't combine `Waiter::Show()` and `Singer::Show()` without calling `Worker::Show()` twice.
+
+We can use a modular approach to solve this. That is, providing a method that displays only the new components.
+
+```c++
+void Worker::Data() const
+{
+    cout << "Name: " << fullname << "\n";
+    cout << "Employee ID: " << id << "\n";
+}
+void Waiter::Data() const
+{
+    cout << "Panache rating: " << panache << "\n";
+}
+void Singer::Data() const
+{
+    cout << "Vocal range: " << pv[voice] << "\n";
+}
+void SingingWaiter::Data() const
+{
+    Singer::Data();
+    Waiter::Data();
+}
+void SingingWaiter::Show() const
+{
+    cout << "Category: singing waiter\n";
+    Worker::Data();
+    Data();
+}
+```
+
+#### Mixed Virtual and Nonvirtual Bases
+
+Suppose, for example, that class `B` is a virtual base class to classes `C` and `D` and a nonvirtual base class to classes `X` and `Y`. Furthermore, suppose class `M` is derived from `C, D, X`, and `Y`. In this case, class `M` contains one class `B` subobject for all the virtually derived ancestors (that is, classes `C` and `D`) and a separate class `B` subobject for each nonvirtual ancestor (that is, classes `X` and `Y`). So, all told, it would contain three class `B` subobjects.
+
+#### Virtual Base Classes and Dominance
+
+With nonvirtual base classes, if a class inherits two or more members (data or methods) with the same name from different classes, using that name without qualifying it with a class name is ambiguous. If virtual base classes are involved, however, such a use may or may not be ambiguous. In this case, if one name dominates all others, it can be used unambiguously without a qualifier.
+
+```c++
+class B
+{
+public:
+    short q();
+}
+class C : virtual public B
+{
+public:
+    long q();
+    int omg()
+};
+class D : public C {};
+class E : virtual public B
+{
+private:
+    int omg();
+};
+class F: public D, public E {};
+```
+
+The `q()` from class `C` dominates the definition in class `B`, thus, methods in `F` can use `q()` to denote `C::q()`. Neither definition of `omg()` dominates the other, therefore, we must add qualifier.
+
+The virtual ambiguity rules pay no attention to access rules. That is, even if `E::omg()` is private, using `omg()` is ambiguous. Even if `C::q()` is private, `q()` would still refer to inaccessible `C::q()`.
+
+### Class Templates
+
+Let's just see a template example.
+
+```c++
+// stacktp.h -- a stack template
+#ifndef STACKTP_H_
+#define STACKTP_H_
+template <typename Type>
+class Stack
+{
+private:
+    enum {MAX = 10}; // constant specific to class
+    Type items[MAX]; // holds stack items
+    int top; // index for top stack item
+public:
+    Stack();
+    bool isempty();
+    bool isfull();
+    bool push(const Type & item); // add item to stack
+    bool pop(Type & item); // pop top into item
+};
+template <typename Type>
+Stack<Type>::Stack()
+{
+    top = 0;
+}
+template <typename Type>
+bool Stack<Type>::isempty()
+{
+    return top == 0;
+}
+template <typename Type>
+bool Stack<Type>::isfull()
+{
+    return top == MAX;
+}
+template <typename Type>
+bool Stack<Type>::push(const Type & item)
+{
+    if (top < MAX)
+    {
+        items[top++] = item;
+        return true;
+    }
+    else
+        return false;
+}
+template <typename Type>
+bool Stack<Type>::pop(Type & item)
+{
+    if (top > 0)
+    {
+        item = items[--top];
+        return true;
+    }
+    else
+        return false;
+}
+#endif
+```
+
+Notice that we have to put class declaration and definition in the same file, since class templates are not class, they are just instructions to the compiler about how to generate class (same as funciton templates).
+
+#### An Array Template Example and Non-Type Arguments
+
+Let's begin with a simple array template that lets you specify an array size. One is to use a dynamic array and a constructor argument to provide the number of elements.
+
+```c++
+template <class T>
+Stack<T>::Stack(int ss): stacksize(ss), top(0){
+    items = new Type [stacksize]
+}
+```
+
+Another approach is to use a template argument to provide the number of elements. This is what `std::array` does.
+
+```c++
+template<class T, int n>
+class ArrayTP{
+private:
+    T ar[n];
+...
+}
+```
+
+`T` is a type parameter, or type argument. `n` is called a non-type, or expression argument.
+
+Expression arguments can be an integer type, an enumerration type, a reference, or a pointer. Also the template code can't alter the value of the arument or take its address. Also when instantiating a template, the expression argument should be a constant expression.
+
+The constructor approach (the `Stack` example) uses heap memory, whereas the expressoin argument approach uses memory stack. This provides faster execution time, particularly if we have a lot of small arrays.
+
+However, the drawback is that different array sizes generate different templates. Also, the constructor approach is more versatile, since you can resize the array.
+
+#### Template Versatility
+
+##### Using More Than One Type Parameter
+
+We can also write this:
+
+```c++
+template <class T1, class T2>
+class Pair{
+private:
+    T1 a;
+    T2 b;
+...
+}
+```
+
+##### Default Type Template Parameters
+
+```c++
+template <class T1, class T2 = int> class Topo {...};
+Topo<double, double> m1; // T1 is double, T2 is double
+Topo<double> m2; // T1 is double, T2 is int
+```
+
+#### Template Specializations
+
+It is similar to function templates.
+
+##### Implicit Instantiations
+
+The compiler doesn't generate an implicit instantiation of the class until it needs an object:
+
+```c++
+ArrayTP<double, 30> * pt; // a pointer, no object needed yet
+pt = new ArrayTP<double, 30>; // now an object is needed
+```
+
+##### Explicit Instantiations
+
+```c++
+template class ArrayTP<string, 100>; // generate ArrayTP<string, 100> class
+```
+
+The compiler generates the class definition, including method definitions, even though no object of the class has yet been created or mentioned.
+
+##### Explicit Specializations
+
+Tells the compiler to generate the template in a particular way.
+
+Let's say we have a template, and we want to specialize it when the type is `const char *`:
+
+```c++
+template <typename T>
+class SortedArray
+{
+    ...// details omitted
+};
+
+// specialization
+template <> class SortedArray<const char *>
+{
+...// details omitted
+};
+```
+
+##### Partial Specializations
+
+```c++
+// general template
+template <class T1, class T2> class Pair {...};
+// specialization with T2 set to int
+template <class T1> class Pair<T1, int> {...};
+// specialization with T1 and T2 set to int
+template <> class Pair<int, int> {...};
+Pair<double, double> p1; // use general Pair template
+Pair<double, int> p2; // use Pair<T1, int> partial specialization
+Pair<int, int> p3; // use Pair<int, int> explicit specialization
+
+template<class T> class Feeb { ... };// general version
+template<class T*> class Feeb { ... };// pointer partial specialization
+Feeb<char> fb1; // use general Feeb template, T is char
+Feeb<char *> fb2; // use Feeb T* specialization, T is char
+
+// general template
+template <class T1, class T2, class T3> class Trio{...};
+// specialization with T3 set to T2
+template <class T1, class T2> class Trio<T1, T2, T2> {...};
+// specialization with T3 and T2 set to T1*
+template <class T1> class Trio<T1, T1*, T1*> {...};
+Trio<int, short, char *> t1; // use general template
+Trio<int, short> t2; // use Trio<T1, T2, T2>
+Trio<char, char *, char *> t3; use Trio<T1, T1*, T1*>
+```
+
+#### Member Templates
+
+A template can be a member of a structure, class, or template class.
+
+```c++
+template <typename T>
+class beta
+{
+private:
+    template <typename V> // nested template class member
+    class hold
+    {
+    private:
+        V val;
+    public:
+        hold(V v = 0) : val(v) {}
+        void show() const { cout << val << endl; }
+        V Value() const { return val; }
+    };
+    hold<T> q; // template object
+    hold<int> n; // template object
+public:
+    beta( T t, int i) : q(t), n(i) {}
+    template<typename U> // template method
+    U blab(U u, T t) { return (n.Value() + q.Value()) * u / t; }
+    void Show() const { q.show(); n.show();}
+};
+```
+
+We can also write the definition outside the class template, but it depends on the compiler. Some compilers don't support.
+
+```c++
+template <typename T>
+class beta
+{
+private:
+    template <typename V> // declaration
+    class hold;
+    hold<T> q;
+    hold<int> n;
+public:
+    beta( T t, int i) : q(t), n(i) {}
+    template<typename U> // declaration
+    U blab(U u, T t);
+    void Show() const { q.show(); n.show();}
+};
+// member definition
+template <typename T>
+    template<typename V>
+        class beta<T>::hold
+        {
+        private:
+            V val;
+        public:
+            hold(V v = 0) : val(v) {}
+            void show() const { std::cout << val << std::endl; }
+            V Value() const { return val; }
+        };
+// member definition
+template <typename T>
+    template <typename U>
+        U beta<T>::blab(U u, T t)
+        {
+            return (n.Value() + q.Value()) * u / t;
+        }
+```
+
+#### Templates As Parameters
+
+We can write:
+
+```c++
+template <template <typename T> class Thing>
+class Crab
+```
+
+Here `template <typename T> class` is the type, and `Thing` is the parameter. Suppose we have this declaration `Crab<King> legs;`. Then the template argument `King` must be a template class whose declaration look like this：
+
+```c++
+template <typename T>
+class King {...};
+```
+
+For example:
+
+```c++
+template <template <typename T> class Thing>
+class Crab
+{
+private:
+    Thing<int> s1;
+    Thing<double> s2;
+public:
+    Crab() {};
+    // assumes the thing class has push() and pop() members
+    bool push(int a, double x) { return s1.push(a) && s2.push(x); }
+    bool pop(int & a, double & x){ return s1.pop(a) && s2.pop(x); }
+};
+
+// create object
+Crab<Stack> nebula;
+```
+
+We can also mix template parameters with regular parameters.
+
+```c++
+template <template <typename T> class Thing, typename U, typename V>
+class Crab{
+private:
+    Thing<U> s1;
+    Thing<V> s2;
+...
+}
+
+Crab<Stack, int, double> nebula; // T=Stack, U=int, V=double
+```
+
+#### Template Classes and Friends
+
+Template class declarations can have friends, too. There are three categories of templates' friend:
+
+* Non-template friends
+* Bound template friends, meaning the type of the friend is determined by the type of the class when a class is instantiated
+* Unbound template friends, meaning that all specializations of the friend are friends to each specialization of the class
+
+##### Non-Template Friend Functions to Template Classes
+
+```c++
+template <class T>
+class HasFriend
+{
+public:
+    friend void counts(); // friend to all HasFriend instantiations
+    ...
+};
+```
+
+This declaration makes the `counts()` function a friend to all instantiations of the template. But the problem is, how do this function access a `HasFriend` object without having any parameter?
+
+It could access a global object; it could access nonglobal objects by using a global pointer; it could create its own objects; and it could access static data members of a template class, which exist separately from an object.
+
+What if we want to pass an object as a parameter? Can we write:
+
+```c++
+friend void report(HasFriend &);
+```
+
+The answer is no. The reason is that `HasFriend` is not a object. We need to indicate a specialization. For example:
+
+```c++
+template <class T>
+class HasFriend
+{
+public:
+    friend void report(HasFriend<T> &);  // bound template friend
+    ...
+};
+```
+
+Notice that `report()` is not a template function; it just has a parameter that is a template. This means that you have to define explicit specializations for the friends you plan to use:
+
+```c++
+void report(HasFriend<short> &) {...}; // explicit specialization for short
+void report(HasFriend<int> &) {...}; // explicit specialization for int
+```
+
+##### Bound Template Friend Functions to Template Classes
+
+We can make friend functions a template and bound them with each specialization.
+
+First, declare each template function before the class definition.
+
+```c++
+template <typename T> void counts();
+template <typename T> void report(T &);
+```
+
+Then declare the templates as friends inside the function:
+
+```c++
+template <typename TT>
+class HasFriendT
+{
+    ...
+    friend void counts<TT>();
+    friend void report<>(HasFriendT<TT> &); // same as report<HasFriendT<TT>>(HasFriendT<TT> &)
+};
+```
+
+In the `report()` function, we omit the template specialization in `<>` , since the argument can be deduced from the function argument.
+
+The last thing is that we must provide template definitions for the friends.
+
+```c++
+// template friend functions definitions
+template <typename T>
+void counts()
+{
+    cout << "template size: " << sizeof(HasFriendT<T>) << "; ";
+    cout << "template counts(): " << HasFriendT<T>::ct << endl;
+}
+template <typename T>
+void report(T & hf)
+{
+    cout << hf.item << endl;
+}
+```
+
+##### Unbound Template Friend Functions to Template Classes
+
+The bound template friend functions in the preceding section are template specializations of a template declared outside a class. An int class specialization gets an int function specialization, and so on.
+
+By declaring a template inside a class, you can create unbound friend functions for which every function specialization is a friend to every class specialization.
+
+```c++
+template <typename T>
+class ManyFriend
+{
+    ...
+    template <typename C, typename D> friend void show2(C &, D &);
+};
+```

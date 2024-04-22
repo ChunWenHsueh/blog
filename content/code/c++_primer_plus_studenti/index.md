@@ -1,5 +1,5 @@
 ---
-title: "String Class"
+title: "Student Class"
 date: 
 draft: false
 math: true
