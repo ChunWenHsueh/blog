@@ -2293,7 +2293,50 @@ By declaring a template inside a class, you can create unbound friend functions 
 template <typename T>
 class ManyFriend
 {
-    ...
+private:
+    T item;
+public:
+    ManyFriend(const T & i) : item(i) {}
     template <typename C, typename D> friend void show2(C &, D &);
 };
+template <typename C, typename D> void show2(C & c, D & d)
+{
+    cout << c.item << ", " << d.item << endl;
+}
+int main()
+{
+    ManyFriend<int> hfi1(10);
+    ManyFriend<int> hfi2(20);
+    ManyFriend<double> hfdb(10.5);
+    cout << "hfi1, hfi2: ";
+    show2(hfi1, hfi2);
+    cout << "hfdb, hfi2: ";
+    show2(hfdb, hfi2);
+    return 0;
+}
+```
+
+#### Template Aliases (C++11)
+
+If you write code like this:
+
+```c++
+// define three typedef aliases
+typedef std::array<double, 12> arrd;
+typedef std::array<int, 12> arri;
+typedef std::array<std::string, 12> arrst;
+arrd gallons; // gallons is type std::array<double, 12>
+arri days; // days is type std::array<int, 12>
+arrst months; // months is type std::array<std::string, 12>
+```
+
+You can create template aliases:
+
+```c++
+template<typename T>
+using arrtype = std::array<T,12>; // template to create multiple aliases
+
+arrtype<double> gallons; // gallons is type std::array<double, 12>
+arrtype<int> days; // days is type std::array<int, 12>
+arrtype<std::string> months; // months is type std::array<std::string, 12>
 ```
