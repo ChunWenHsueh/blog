@@ -1,0 +1,327 @@
+<!doctype html><html lang=en dir=auto><head><script src="/blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=blog/livereload" data-no-instant defer></script><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Student Class | cwHsueh</title>
+<meta name=keywords content><meta name=description content='studenti.h
+// studenti.h -- defining a Student class using private inheritance
+#ifndef STUDENTC_H_
+#define STUDENTC_H_
+#include <iostream>
+#include <valarray>
+#include <string>
+class Student : private std::string, private std::valarray<double>
+{
+private:
+    typedef std::valarray<double> ArrayDb;
+    // private method for scores output
+    std::ostream & arr_out(std::ostream & os) const;
+public:
+    Student() : std::string("Null Student"), ArrayDb() {}
+    explicit Student(const std::string & s)
+    : std::string(s), ArrayDb() {}
+    explicit Student(int n) : std::string("Nully"), ArrayDb(n) {}
+    Student(const std::string & s, int n)
+    : std::string(s), ArrayDb(n) {}
+    Student(const std::string & s, const ArrayDb & a)
+    : std::string(s), ArrayDb(a) {}
+    Student(const char * str, const double * pd, int n)
+    : std::string(str), ArrayDb(pd, n) {}
+    ~Student() {}
+    double Average() const;
+    double & operator[](int i);
+    double operator[](int i) const;
+    const std::string & Name() const;
+// friends
+    // input
+    friend std::istream & operator>>(std::istream & is,
+    Student & stu); // 1 word
+    friend std::istream & getline(std::istream & is,
+    Student & stu); // 1 line
+    // output
+    friend std::ostream & operator<<(std::ostream & os,
+    const Student & stu);
+};
+#endif
+studenti.cpp
+// studenti.cpp -- Student class using private inheritance
+#include "studenti.h"
+using std::ostream;
+using std::endl;
+using std::istream;
+using std::string;
+// public methods
+double Student::Average() const
+{
+    if (ArrayDb::size() > 0)
+        return ArrayDb::sum()/ArrayDb::size();
+    else
+        return 0;
+}
+const string & Student::Name() const
+{
+    return (const string &) *this;
+}
+double & Student::operator[](int i)
+{
+    return ArrayDb::operator[](i); // use ArrayDb::operator[]()
+}
+double Student::operator[](int i) const
+{
+    return ArrayDb::operator[](i);
+}
+// private method
+ostream & Student::arr_out(ostream & os) const
+{
+    int i;
+    int lim = ArrayDb::size();
+    if (lim > 0)
+    {
+        for (i = 0; i < lim; i++)
+        {
+            os << ArrayDb::operator[](i) << " ";
+            if (i % 5 == 4)
+                os << endl;
+        }
+        if (i % 5 != 0)
+            os << endl;
+    }
+    else
+        os << " empty array ";
+    return os;
+}
+// friends
+// use String version of operator>>()
+istream & operator>>(istream & is, Student & stu)
+{
+    is >> (string &)stu;
+    return is;
+}
+// use string friend getline(ostream &, const string &)
+istream & getline(istream & is, Student & stu)
+{
+    getline(is, (string &)stu);
+    return is;
+}
+// use string version of operator<<()
+ostream & operator<<(ostream & os, const Student & stu)
+{
+    os << "Scores for " << (const string &) stu << ":\n";
+    stu.arr_out(os); // use private method for scores
+    return os;
+}
+'><meta name=author content="cwHsueh"><link rel=canonical href=http://localhost:1313/blog/code/c++_primer_plus_studenti/><link crossorigin=anonymous href=/blog/assets/css/stylesheet.45e028aa8ce0961349adf411b013ee39406be2c0bc80d4ea3fc04555f7f4611a.css integrity="sha256-ReAoqozglhNJrfQRsBPuOUBr4sC8gNTqP8BFVff0YRo=" rel="preload stylesheet" as=style><link rel=icon href=http://localhost:1313/favicon.ico><link rel=icon type=image/png sizes=16x16 href=http://localhost:1313/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=http://localhost:1313/favicon-32x32.png><link rel=apple-touch-icon href=http://localhost:1313/apple-touch-icon.png><link rel=mask-icon href=http://localhost:1313/blog/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=http://localhost:1313/blog/code/c++_primer_plus_studenti/><noscript><style>#theme-toggle,.top-link{display:none}</style></noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css integrity=sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js integrity=sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js integrity=sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh crossorigin=anonymous></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],throwOnError:!1})})</script><meta property="og:url" content="http://localhost:1313/blog/code/c++_primer_plus_studenti/"><meta property="og:site_name" content="cwHsueh"><meta property="og:title" content="Student Class"><meta property="og:description" content='studenti.h
+// studenti.h -- defining a Student class using private inheritance #ifndef STUDENTC_H_ #define STUDENTC_H_ #include <iostream> #include <valarray> #include <string> class Student : private std::string, private std::valarray<double> { private: typedef std::valarray<double> ArrayDb; // private method for scores output std::ostream & arr_out(std::ostream & os) const; public: Student() : std::string("Null Student"), ArrayDb() {} explicit Student(const std::string & s) : std::string(s), ArrayDb() {} explicit Student(int n) : std::string("Nully"), ArrayDb(n) {} Student(const std::string & s, int n) : std::string(s), ArrayDb(n) {} Student(const std::string & s, const ArrayDb & a) : std::string(s), ArrayDb(a) {} Student(const char * str, const double * pd, int n) : std::string(str), ArrayDb(pd, n) {} ~Student() {} double Average() const; double & operator[](int i); double operator[](int i) const; const std::string & Name() const; // friends // input friend std::istream & operator>>(std::istream & is, Student & stu); // 1 word friend std::istream & getline(std::istream & is, Student & stu); // 1 line // output friend std::ostream & operator<<(std::ostream & os, const Student & stu); }; #endif studenti.cpp
+// studenti.cpp -- Student class using private inheritance #include "studenti.h" using std::ostream; using std::endl; using std::istream; using std::string; // public methods double Student::Average() const { if (ArrayDb::size() > 0) return ArrayDb::sum()/ArrayDb::size(); else return 0; } const string & Student::Name() const { return (const string &) *this; } double & Student::operator[](int i) { return ArrayDb::operator[](i); // use ArrayDb::operator[]() } double Student::operator[](int i) const { return ArrayDb::operator[](i); } // private method ostream & Student::arr_out(ostream & os) const { int i; int lim = ArrayDb::size(); if (lim > 0) { for (i = 0; i < lim; i++) { os << ArrayDb::operator[](i) << " "; if (i % 5 == 4) os << endl; } if (i % 5 != 0) os << endl; } else os << " empty array "; return os; } // friends // use String version of operator>>() istream & operator>>(istream & is, Student & stu) { is >> (string &)stu; return is; } // use string friend getline(ostream &, const string &) istream & getline(istream & is, Student & stu) { getline(is, (string &)stu); return is; } // use string version of operator<<() ostream & operator<<(ostream & os, const Student & stu) { os << "Scores for " << (const string &) stu << ":\n"; stu.arr_out(os); // use private method for scores return os; } '><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="code"><meta name=twitter:card content="summary"><meta name=twitter:title content="Student Class"><meta name=twitter:description content='studenti.h
+// studenti.h -- defining a Student class using private inheritance
+#ifndef STUDENTC_H_
+#define STUDENTC_H_
+#include <iostream>
+#include <valarray>
+#include <string>
+class Student : private std::string, private std::valarray<double>
+{
+private:
+    typedef std::valarray<double> ArrayDb;
+    // private method for scores output
+    std::ostream & arr_out(std::ostream & os) const;
+public:
+    Student() : std::string("Null Student"), ArrayDb() {}
+    explicit Student(const std::string & s)
+    : std::string(s), ArrayDb() {}
+    explicit Student(int n) : std::string("Nully"), ArrayDb(n) {}
+    Student(const std::string & s, int n)
+    : std::string(s), ArrayDb(n) {}
+    Student(const std::string & s, const ArrayDb & a)
+    : std::string(s), ArrayDb(a) {}
+    Student(const char * str, const double * pd, int n)
+    : std::string(str), ArrayDb(pd, n) {}
+    ~Student() {}
+    double Average() const;
+    double & operator[](int i);
+    double operator[](int i) const;
+    const std::string & Name() const;
+// friends
+    // input
+    friend std::istream & operator>>(std::istream & is,
+    Student & stu); // 1 word
+    friend std::istream & getline(std::istream & is,
+    Student & stu); // 1 line
+    // output
+    friend std::ostream & operator<<(std::ostream & os,
+    const Student & stu);
+};
+#endif
+studenti.cpp
+// studenti.cpp -- Student class using private inheritance
+#include "studenti.h"
+using std::ostream;
+using std::endl;
+using std::istream;
+using std::string;
+// public methods
+double Student::Average() const
+{
+    if (ArrayDb::size() > 0)
+        return ArrayDb::sum()/ArrayDb::size();
+    else
+        return 0;
+}
+const string & Student::Name() const
+{
+    return (const string &) *this;
+}
+double & Student::operator[](int i)
+{
+    return ArrayDb::operator[](i); // use ArrayDb::operator[]()
+}
+double Student::operator[](int i) const
+{
+    return ArrayDb::operator[](i);
+}
+// private method
+ostream & Student::arr_out(ostream & os) const
+{
+    int i;
+    int lim = ArrayDb::size();
+    if (lim > 0)
+    {
+        for (i = 0; i < lim; i++)
+        {
+            os << ArrayDb::operator[](i) << " ";
+            if (i % 5 == 4)
+                os << endl;
+        }
+        if (i % 5 != 0)
+            os << endl;
+    }
+    else
+        os << " empty array ";
+    return os;
+}
+// friends
+// use String version of operator>>()
+istream & operator>>(istream & is, Student & stu)
+{
+    is >> (string &)stu;
+    return is;
+}
+// use string friend getline(ostream &, const string &)
+istream & getline(istream & is, Student & stu)
+{
+    getline(is, (string &)stu);
+    return is;
+}
+// use string version of operator<<()
+ostream & operator<<(ostream & os, const Student & stu)
+{
+    os << "Scores for " << (const string &) stu << ":\n";
+    stu.arr_out(os); // use private method for scores
+    return os;
+}
+'><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Codes","item":"http://localhost:1313/blog/code/"},{"@type":"ListItem","position":2,"name":"Student Class","item":"http://localhost:1313/blog/code/c++_primer_plus_studenti/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Student Class","name":"Student Class","description":"studenti.h\n// studenti.h -- defining a Student class using private inheritance #ifndef STUDENTC_H_ #define STUDENTC_H_ #include \u0026lt;iostream\u0026gt; #include \u0026lt;valarray\u0026gt; #include \u0026lt;string\u0026gt; class Student : private std::string, private std::valarray\u0026lt;double\u0026gt; { private: typedef std::valarray\u0026lt;double\u0026gt; ArrayDb; // private method for scores output std::ostream \u0026amp; arr_out(std::ostream \u0026amp; os) const; public: Student() : std::string(\u0026#34;Null Student\u0026#34;), ArrayDb() {} explicit Student(const std::string \u0026amp; s) : std::string(s), ArrayDb() {} explicit Student(int n) : std::string(\u0026#34;Nully\u0026#34;), ArrayDb(n) {} Student(const std::string \u0026amp; s, int n) : std::string(s), ArrayDb(n) {} Student(const std::string \u0026amp; s, const ArrayDb \u0026amp; a) : std::string(s), ArrayDb(a) {} Student(const char * str, const double * pd, int n) : std::string(str), ArrayDb(pd, n) {} ~Student() {} double Average() const; double \u0026amp; operator[](int i); double operator[](int i) const; const std::string \u0026amp; Name() const; // friends // input friend std::istream \u0026amp; operator\u0026gt;\u0026gt;(std::istream \u0026amp; is, Student \u0026amp; stu); // 1 word friend std::istream \u0026amp; getline(std::istream \u0026amp; is, Student \u0026amp; stu); // 1 line // output friend std::ostream \u0026amp; operator\u0026lt;\u0026lt;(std::ostream \u0026amp; os, const Student \u0026amp; stu); }; #endif studenti.cpp\n// studenti.cpp -- Student class using private inheritance #include \u0026#34;studenti.h\u0026#34; using std::ostream; using std::endl; using std::istream; using std::string; // public methods double Student::Average() const { if (ArrayDb::size() \u0026gt; 0) return ArrayDb::sum()/ArrayDb::size(); else return 0; } const string \u0026amp; Student::Name() const { return (const string \u0026amp;) *this; } double \u0026amp; Student::operator[](int i) { return ArrayDb::operator[](i); // use ArrayDb::operator[]() } double Student::operator[](int i) const { return ArrayDb::operator[](i); } // private method ostream \u0026amp; Student::arr_out(ostream \u0026amp; os) const { int i; int lim = ArrayDb::size(); if (lim \u0026gt; 0) { for (i = 0; i \u0026lt; lim; i++) { os \u0026lt;\u0026lt; ArrayDb::operator[](i) \u0026lt;\u0026lt; \u0026#34; \u0026#34;; if (i % 5 == 4) os \u0026lt;\u0026lt; endl; } if (i % 5 != 0) os \u0026lt;\u0026lt; endl; } else os \u0026lt;\u0026lt; \u0026#34; empty array \u0026#34;; return os; } // friends // use String version of operator\u0026gt;\u0026gt;() istream \u0026amp; operator\u0026gt;\u0026gt;(istream \u0026amp; is, Student \u0026amp; stu) { is \u0026gt;\u0026gt; (string \u0026amp;)stu; return is; } // use string friend getline(ostream \u0026amp;, const string \u0026amp;) istream \u0026amp; getline(istream \u0026amp; is, Student \u0026amp; stu) { getline(is, (string \u0026amp;)stu); return is; } // use string version of operator\u0026lt;\u0026lt;() ostream \u0026amp; operator\u0026lt;\u0026lt;(ostream \u0026amp; os, const Student \u0026amp; stu) { os \u0026lt;\u0026lt; \u0026#34;Scores for \u0026#34; \u0026lt;\u0026lt; (const string \u0026amp;) stu \u0026lt;\u0026lt; \u0026#34;:\\n\u0026#34;; stu.arr_out(os); // use private method for scores return os; } ","keywords":[],"articleBody":"studenti.h\n// studenti.h -- defining a Student class using private inheritance #ifndef STUDENTC_H_ #define STUDENTC_H_ #include #include #include class Student : private std::string, private std::valarray\u003cdouble\u003e { private: typedef std::valarray\u003cdouble\u003e ArrayDb; // private method for scores output std::ostream \u0026 arr_out(std::ostream \u0026 os) const; public: Student() : std::string(\"Null Student\"), ArrayDb() {} explicit Student(const std::string \u0026 s) : std::string(s), ArrayDb() {} explicit Student(int n) : std::string(\"Nully\"), ArrayDb(n) {} Student(const std::string \u0026 s, int n) : std::string(s), ArrayDb(n) {} Student(const std::string \u0026 s, const ArrayDb \u0026 a) : std::string(s), ArrayDb(a) {} Student(const char * str, const double * pd, int n) : std::string(str), ArrayDb(pd, n) {} ~Student() {} double Average() const; double \u0026 operator[](int i); double operator[](int i) const; const std::string \u0026 Name() const; // friends // input friend std::istream \u0026 operator\u003e\u003e(std::istream \u0026 is, Student \u0026 stu); // 1 word friend std::istream \u0026 getline(std::istream \u0026 is, Student \u0026 stu); // 1 line // output friend std::ostream \u0026 operator\u003c\u003c(std::ostream \u0026 os, const Student \u0026 stu); }; #endif studenti.cpp\n// studenti.cpp -- Student class using private inheritance #include \"studenti.h\" using std::ostream; using std::endl; using std::istream; using std::string; // public methods double Student::Average() const { if (ArrayDb::size() \u003e 0) return ArrayDb::sum()/ArrayDb::size(); else return 0; } const string \u0026 Student::Name() const { return (const string \u0026) *this; } double \u0026 Student::operator[](int i) { return ArrayDb::operator[](i); // use ArrayDb::operator[]() } double Student::operator[](int i) const { return ArrayDb::operator[](i); } // private method ostream \u0026 Student::arr_out(ostream \u0026 os) const { int i; int lim = ArrayDb::size(); if (lim \u003e 0) { for (i = 0; i \u003c lim; i++) { os \u003c\u003c ArrayDb::operator[](i) \u003c\u003c \" \"; if (i % 5 == 4) os \u003c\u003c endl; } if (i % 5 != 0) os \u003c\u003c endl; } else os \u003c\u003c \" empty array \"; return os; } // friends // use String version of operator\u003e\u003e() istream \u0026 operator\u003e\u003e(istream \u0026 is, Student \u0026 stu) { is \u003e\u003e (string \u0026)stu; return is; } // use string friend getline(ostream \u0026, const string \u0026) istream \u0026 getline(istream \u0026 is, Student \u0026 stu) { getline(is, (string \u0026)stu); return is; } // use string version of operator\u003c\u003c() ostream \u0026 operator\u003c\u003c(ostream \u0026 os, const Student \u0026 stu) { os \u003c\u003c \"Scores for \" \u003c\u003c (const string \u0026) stu \u003c\u003c \":\\n\"; stu.arr_out(os); // use private method for scores return os; } ","wordCount":"384","inLanguage":"en","datePublished":"0001-01-01T00:00:00Z","dateModified":"0001-01-01T00:00:00Z","author":{"@type":"Person","name":"cwHsueh"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:1313/blog/code/c++_primer_plus_studenti/"},"publisher":{"@type":"Organization","name":"cwHsueh","logo":{"@type":"ImageObject","url":"http://localhost:1313/favicon.ico"}}}</script></head><body class=dark id=top><script>localStorage.getItem("pref-theme")==="light"&&document.body.classList.remove("dark")</script><header class=header><nav class=nav><div class=logo><a href=http://localhost:1313/blog/ accesskey=h title="cwHsueh (Alt + H)">cwHsueh</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://cwhsueh.com title=about><span>about</span>&nbsp;<svg fill="none" shape-rendering="geometricPrecision" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a></li><li><a href=http://localhost:1313/blog/leetcode/ title=leetcode><span>leetcode</span></a></li><li><a href=http://localhost:1313/blog/tags/ title=tags><span>tags</span></a></li><li><a href=http://localhost:1313/blog/archives/ title=archive><span>archive</span></a></li><li><a href=http://localhost:1313/blog/search/ title="search (Alt + /)" accesskey=/><span>search</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=http://localhost:1313/blog/>Home</a>&nbsp;»&nbsp;<a href=http://localhost:1313/blog/code/>Codes</a></div><h1 class="post-title entry-hint-parent">Student Class</h1><div class=post-meta>2 min&nbsp;·&nbsp;384 words&nbsp;·&nbsp;cwHsueh</div></header><div class=post-content><p>studenti.h</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++><span class=line><span class=cl><span class=c1>// studenti.h -- defining a Student class using private inheritance
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#ifndef STUDENTC_H_
+</span></span></span><span class=line><span class=cl><span class=cp>#define STUDENTC_H_
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;iostream&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;valarray&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;string&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=k>class</span> <span class=nc>Student</span> <span class=o>:</span> <span class=k>private</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span> <span class=k>private</span> <span class=n>std</span><span class=o>::</span><span class=n>valarray</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl><span class=k>private</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>typedef</span> <span class=n>std</span><span class=o>::</span><span class=n>valarray</span><span class=o>&lt;</span><span class=kt>double</span><span class=o>&gt;</span> <span class=n>ArrayDb</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// private method for scores output
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>std</span><span class=o>::</span><span class=n>ostream</span> <span class=o>&amp;</span> <span class=n>arr_out</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>ostream</span> <span class=o>&amp;</span> <span class=n>os</span><span class=p>)</span> <span class=k>const</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>public</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>Student</span><span class=p>()</span> <span class=o>:</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=s>&#34;Null Student&#34;</span><span class=p>),</span> <span class=n>ArrayDb</span><span class=p>()</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=k>explicit</span> <span class=nf>Student</span><span class=p>(</span><span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=o>&amp;</span> <span class=n>s</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>:</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>s</span><span class=p>),</span> <span class=n>ArrayDb</span><span class=p>()</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=k>explicit</span> <span class=nf>Student</span><span class=p>(</span><span class=kt>int</span> <span class=n>n</span><span class=p>)</span> <span class=o>:</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=s>&#34;Nully&#34;</span><span class=p>),</span> <span class=n>ArrayDb</span><span class=p>(</span><span class=n>n</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=n>Student</span><span class=p>(</span><span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=o>&amp;</span> <span class=n>s</span><span class=p>,</span> <span class=kt>int</span> <span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>:</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>s</span><span class=p>),</span> <span class=n>ArrayDb</span><span class=p>(</span><span class=n>n</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=n>Student</span><span class=p>(</span><span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=o>&amp;</span> <span class=n>s</span><span class=p>,</span> <span class=k>const</span> <span class=n>ArrayDb</span> <span class=o>&amp;</span> <span class=n>a</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>:</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>s</span><span class=p>),</span> <span class=n>ArrayDb</span><span class=p>(</span><span class=n>a</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=n>Student</span><span class=p>(</span><span class=k>const</span> <span class=kt>char</span> <span class=o>*</span> <span class=n>str</span><span class=p>,</span> <span class=k>const</span> <span class=kt>double</span> <span class=o>*</span> <span class=n>pd</span><span class=p>,</span> <span class=kt>int</span> <span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>:</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>str</span><span class=p>),</span> <span class=n>ArrayDb</span><span class=p>(</span><span class=n>pd</span><span class=p>,</span> <span class=n>n</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=o>~</span><span class=n>Student</span><span class=p>()</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=kt>double</span> <span class=nf>Average</span><span class=p>()</span> <span class=k>const</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>double</span> <span class=o>&amp;</span> <span class=k>operator</span><span class=p>[](</span><span class=kt>int</span> <span class=n>i</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=kt>double</span> <span class=k>operator</span><span class=p>[](</span><span class=kt>int</span> <span class=n>i</span><span class=p>)</span> <span class=k>const</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=o>&amp;</span> <span class=n>Name</span><span class=p>()</span> <span class=k>const</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=c1>// friends
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// input
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>friend</span> <span class=n>std</span><span class=o>::</span><span class=n>istream</span> <span class=o>&amp;</span> <span class=k>operator</span><span class=o>&gt;&gt;</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>istream</span> <span class=o>&amp;</span> <span class=n>is</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>Student</span> <span class=o>&amp;</span> <span class=n>stu</span><span class=p>);</span> <span class=c1>// 1 word
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>friend</span> <span class=n>std</span><span class=o>::</span><span class=n>istream</span> <span class=o>&amp;</span> <span class=n>getline</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>istream</span> <span class=o>&amp;</span> <span class=n>is</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>Student</span> <span class=o>&amp;</span> <span class=n>stu</span><span class=p>);</span> <span class=c1>// 1 line
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// output
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>friend</span> <span class=n>std</span><span class=o>::</span><span class=n>ostream</span> <span class=o>&amp;</span> <span class=k>operator</span><span class=o>&lt;&lt;</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>ostream</span> <span class=o>&amp;</span> <span class=n>os</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=k>const</span> <span class=n>Student</span> <span class=o>&amp;</span> <span class=n>stu</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=cp>#endif
+</span></span></span></code></pre></div><p>studenti.cpp</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++><span class=line><span class=cl><span class=c1>// studenti.cpp -- Student class using private inheritance
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#include</span> <span class=cpf>&#34;studenti.h&#34;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=k>using</span> <span class=n>std</span><span class=o>::</span><span class=n>ostream</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=n>std</span><span class=o>::</span><span class=n>istream</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=c1>// public methods
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>double</span> <span class=n>Student</span><span class=o>::</span><span class=n>Average</span><span class=p>()</span> <span class=k>const</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>ArrayDb</span><span class=o>::</span><span class=n>size</span><span class=p>()</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>ArrayDb</span><span class=o>::</span><span class=n>sum</span><span class=p>()</span><span class=o>/</span><span class=n>ArrayDb</span><span class=o>::</span><span class=n>size</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=k>const</span> <span class=n>string</span> <span class=o>&amp;</span> <span class=n>Student</span><span class=o>::</span><span class=n>Name</span><span class=p>()</span> <span class=k>const</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(</span><span class=k>const</span> <span class=n>string</span> <span class=o>&amp;</span><span class=p>)</span> <span class=o>*</span><span class=k>this</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kt>double</span> <span class=o>&amp;</span> <span class=n>Student</span><span class=o>::</span><span class=k>operator</span><span class=p>[](</span><span class=kt>int</span> <span class=n>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>ArrayDb</span><span class=o>::</span><span class=k>operator</span><span class=p>[](</span><span class=n>i</span><span class=p>);</span> <span class=c1>// use ArrayDb::operator[]()
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kt>double</span> <span class=n>Student</span><span class=o>::</span><span class=k>operator</span><span class=p>[](</span><span class=kt>int</span> <span class=n>i</span><span class=p>)</span> <span class=k>const</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>ArrayDb</span><span class=o>::</span><span class=k>operator</span><span class=p>[](</span><span class=n>i</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// private method
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>ostream</span> <span class=o>&amp;</span> <span class=n>Student</span><span class=o>::</span><span class=n>arr_out</span><span class=p>(</span><span class=n>ostream</span> <span class=o>&amp;</span> <span class=n>os</span><span class=p>)</span> <span class=k>const</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>lim</span> <span class=o>=</span> <span class=n>ArrayDb</span><span class=o>::</span><span class=n>size</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>lim</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>lim</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>ArrayDb</span><span class=o>::</span><span class=k>operator</span><span class=p>[](</span><span class=n>i</span><span class=p>)</span> <span class=o>&lt;&lt;</span> <span class=s>&#34; &#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>i</span> <span class=o>%</span> <span class=mi>5</span> <span class=o>==</span> <span class=mi>4</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>i</span> <span class=o>%</span> <span class=mi>5</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=s>&#34; empty array &#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>os</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// friends
+</span></span></span><span class=line><span class=cl><span class=c1>// use String version of operator&gt;&gt;()
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>istream</span> <span class=o>&amp;</span> <span class=k>operator</span><span class=o>&gt;&gt;</span><span class=p>(</span><span class=n>istream</span> <span class=o>&amp;</span> <span class=n>is</span><span class=p>,</span> <span class=n>Student</span> <span class=o>&amp;</span> <span class=n>stu</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>is</span> <span class=o>&gt;&gt;</span> <span class=p>(</span><span class=n>string</span> <span class=o>&amp;</span><span class=p>)</span><span class=n>stu</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>is</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// use string friend getline(ostream &amp;, const string &amp;)
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>istream</span> <span class=o>&amp;</span> <span class=n>getline</span><span class=p>(</span><span class=n>istream</span> <span class=o>&amp;</span> <span class=n>is</span><span class=p>,</span> <span class=n>Student</span> <span class=o>&amp;</span> <span class=n>stu</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>getline</span><span class=p>(</span><span class=n>is</span><span class=p>,</span> <span class=p>(</span><span class=n>string</span> <span class=o>&amp;</span><span class=p>)</span><span class=n>stu</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>is</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// use string version of operator&lt;&lt;()
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>ostream</span> <span class=o>&amp;</span> <span class=k>operator</span><span class=o>&lt;&lt;</span><span class=p>(</span><span class=n>ostream</span> <span class=o>&amp;</span> <span class=n>os</span><span class=p>,</span> <span class=k>const</span> <span class=n>Student</span> <span class=o>&amp;</span> <span class=n>stu</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>os</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Scores for &#34;</span> <span class=o>&lt;&lt;</span> <span class=p>(</span><span class=k>const</span> <span class=n>string</span> <span class=o>&amp;</span><span class=p>)</span> <span class=n>stu</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;:</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>stu</span><span class=p>.</span><span class=n>arr_out</span><span class=p>(</span><span class=n>os</span><span class=p>);</span> <span class=c1>// use private method for scores
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>return</span> <span class=n>os</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=http://localhost:1313/blog/>cwHsueh</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

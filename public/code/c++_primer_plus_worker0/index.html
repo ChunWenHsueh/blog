@@ -1,0 +1,221 @@
+<!doctype html><html lang=en dir=auto><head><script src="/blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=blog/livereload" data-no-instant defer></script><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Worker0 Class | cwHsueh</title>
+<meta name=keywords content><meta name=description content='worker0.h
+// worker0.h -- working classes
+#ifndef WORKER0_H_
+#define WORKER0_H_
+#include <string>
+class Worker // an abstract base class
+{
+private:
+    std::string fullname;
+    long id;
+public:
+    Worker() : fullname("no one"), id(0L) {}
+    Worker(const std::string & s, long n)
+    : fullname(s), id(n) {}
+    virtual ~Worker() = 0; // pure virtual destructor
+    virtual void Set();
+    virtual void Show() const;
+};
+class Waiter : public Worker
+{
+private:
+    int panache;
+public:
+    Waiter() : Worker(), panache(0) {}
+    Waiter(const std::string & s, long n, int p = 0)
+    : Worker(s, n), panache(p) {}
+    Waiter(const Worker & wk, int p = 0)
+    : Worker(wk), panache(p) {}
+    void Set();
+    void Show() const;
+};
+class Singer : public Worker
+{
+protected:
+    enum {other, alto, contralto, soprano,
+    bass, baritone, tenor};
+    enum {Vtypes = 7};
+private:
+    static char *pv[Vtypes]; // string equivs of voice types
+    int voice;
+public:
+    Singer() : Worker(), voice(other) {}
+    Singer(const std::string & s, long n, int v = other)
+    : Worker(s, n), voice(v) {}
+    Singer(const Worker & wk, int v = other)
+    : Worker(wk), voice(v) {}
+    void Set();
+    void Show() const;
+};
+#endif
+worker0.cpp'><meta name=author content="cwHsueh"><link rel=canonical href=http://localhost:1313/blog/code/c++_primer_plus_worker0/><link crossorigin=anonymous href=/blog/assets/css/stylesheet.45e028aa8ce0961349adf411b013ee39406be2c0bc80d4ea3fc04555f7f4611a.css integrity="sha256-ReAoqozglhNJrfQRsBPuOUBr4sC8gNTqP8BFVff0YRo=" rel="preload stylesheet" as=style><link rel=icon href=http://localhost:1313/favicon.ico><link rel=icon type=image/png sizes=16x16 href=http://localhost:1313/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=http://localhost:1313/favicon-32x32.png><link rel=apple-touch-icon href=http://localhost:1313/apple-touch-icon.png><link rel=mask-icon href=http://localhost:1313/blog/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=http://localhost:1313/blog/code/c++_primer_plus_worker0/><noscript><style>#theme-toggle,.top-link{display:none}</style></noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css integrity=sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js integrity=sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js integrity=sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh crossorigin=anonymous></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],throwOnError:!1})})</script><meta property="og:url" content="http://localhost:1313/blog/code/c++_primer_plus_worker0/"><meta property="og:site_name" content="cwHsueh"><meta property="og:title" content="Worker0 Class"><meta property="og:description" content='worker0.h
+// worker0.h -- working classes #ifndef WORKER0_H_ #define WORKER0_H_ #include <string> class Worker // an abstract base class { private: std::string fullname; long id; public: Worker() : fullname("no one"), id(0L) {} Worker(const std::string & s, long n) : fullname(s), id(n) {} virtual ~Worker() = 0; // pure virtual destructor virtual void Set(); virtual void Show() const; }; class Waiter : public Worker { private: int panache; public: Waiter() : Worker(), panache(0) {} Waiter(const std::string & s, long n, int p = 0) : Worker(s, n), panache(p) {} Waiter(const Worker & wk, int p = 0) : Worker(wk), panache(p) {} void Set(); void Show() const; }; class Singer : public Worker { protected: enum {other, alto, contralto, soprano, bass, baritone, tenor}; enum {Vtypes = 7}; private: static char *pv[Vtypes]; // string equivs of voice types int voice; public: Singer() : Worker(), voice(other) {} Singer(const std::string & s, long n, int v = other) : Worker(s, n), voice(v) {} Singer(const Worker & wk, int v = other) : Worker(wk), voice(v) {} void Set(); void Show() const; }; #endif worker0.cpp'><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="code"><meta name=twitter:card content="summary"><meta name=twitter:title content="Worker0 Class"><meta name=twitter:description content='worker0.h
+// worker0.h -- working classes
+#ifndef WORKER0_H_
+#define WORKER0_H_
+#include <string>
+class Worker // an abstract base class
+{
+private:
+    std::string fullname;
+    long id;
+public:
+    Worker() : fullname("no one"), id(0L) {}
+    Worker(const std::string & s, long n)
+    : fullname(s), id(n) {}
+    virtual ~Worker() = 0; // pure virtual destructor
+    virtual void Set();
+    virtual void Show() const;
+};
+class Waiter : public Worker
+{
+private:
+    int panache;
+public:
+    Waiter() : Worker(), panache(0) {}
+    Waiter(const std::string & s, long n, int p = 0)
+    : Worker(s, n), panache(p) {}
+    Waiter(const Worker & wk, int p = 0)
+    : Worker(wk), panache(p) {}
+    void Set();
+    void Show() const;
+};
+class Singer : public Worker
+{
+protected:
+    enum {other, alto, contralto, soprano,
+    bass, baritone, tenor};
+    enum {Vtypes = 7};
+private:
+    static char *pv[Vtypes]; // string equivs of voice types
+    int voice;
+public:
+    Singer() : Worker(), voice(other) {}
+    Singer(const std::string & s, long n, int v = other)
+    : Worker(s, n), voice(v) {}
+    Singer(const Worker & wk, int v = other)
+    : Worker(wk), voice(v) {}
+    void Set();
+    void Show() const;
+};
+#endif
+worker0.cpp'><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Codes","item":"http://localhost:1313/blog/code/"},{"@type":"ListItem","position":2,"name":"Worker0 Class","item":"http://localhost:1313/blog/code/c++_primer_plus_worker0/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Worker0 Class","name":"Worker0 Class","description":"worker0.h\n// worker0.h -- working classes #ifndef WORKER0_H_ #define WORKER0_H_ #include \u0026lt;string\u0026gt; class Worker // an abstract base class { private: std::string fullname; long id; public: Worker() : fullname(\u0026#34;no one\u0026#34;), id(0L) {} Worker(const std::string \u0026amp; s, long n) : fullname(s), id(n) {} virtual ~Worker() = 0; // pure virtual destructor virtual void Set(); virtual void Show() const; }; class Waiter : public Worker { private: int panache; public: Waiter() : Worker(), panache(0) {} Waiter(const std::string \u0026amp; s, long n, int p = 0) : Worker(s, n), panache(p) {} Waiter(const Worker \u0026amp; wk, int p = 0) : Worker(wk), panache(p) {} void Set(); void Show() const; }; class Singer : public Worker { protected: enum {other, alto, contralto, soprano, bass, baritone, tenor}; enum {Vtypes = 7}; private: static char *pv[Vtypes]; // string equivs of voice types int voice; public: Singer() : Worker(), voice(other) {} Singer(const std::string \u0026amp; s, long n, int v = other) : Worker(s, n), voice(v) {} Singer(const Worker \u0026amp; wk, int v = other) : Worker(wk), voice(v) {} void Set(); void Show() const; }; #endif worker0.cpp\n","keywords":[],"articleBody":"worker0.h\n// worker0.h -- working classes #ifndef WORKER0_H_ #define WORKER0_H_ #include class Worker // an abstract base class { private: std::string fullname; long id; public: Worker() : fullname(\"no one\"), id(0L) {} Worker(const std::string \u0026 s, long n) : fullname(s), id(n) {} virtual ~Worker() = 0; // pure virtual destructor virtual void Set(); virtual void Show() const; }; class Waiter : public Worker { private: int panache; public: Waiter() : Worker(), panache(0) {} Waiter(const std::string \u0026 s, long n, int p = 0) : Worker(s, n), panache(p) {} Waiter(const Worker \u0026 wk, int p = 0) : Worker(wk), panache(p) {} void Set(); void Show() const; }; class Singer : public Worker { protected: enum {other, alto, contralto, soprano, bass, baritone, tenor}; enum {Vtypes = 7}; private: static char *pv[Vtypes]; // string equivs of voice types int voice; public: Singer() : Worker(), voice(other) {} Singer(const std::string \u0026 s, long n, int v = other) : Worker(s, n), voice(v) {} Singer(const Worker \u0026 wk, int v = other) : Worker(wk), voice(v) {} void Set(); void Show() const; }; #endif worker0.cpp\n// worker0.cpp -- working class methods #include \"worker0.h\" #include using std::cout; using std::cin; using std::endl; // Worker methods // must implement virtual destructor, even if pure Worker::~Worker() {} void Worker::Set() { cout \u003c\u003c \"Enter worker's name: \"; getline(cin, fullname); cout \u003c\u003c \"Enter worker's ID: \"; cin \u003e\u003e id; while (cin.get() != '\\n') continue; } void Worker::Show() const { cout \u003c\u003c \"Name: \" \u003c\u003c fullname \u003c\u003c \"\\n\"; cout \u003c\u003c \"Employee ID: \" \u003c\u003c id \u003c\u003c \"\\n\"; } // Waiter methods void Waiter::Set() { Worker::Set(); cout \u003c\u003c \"Enter waiter's panache rating: \"; cin \u003e\u003e panache; while (cin.get() != '\\n') continue; } void Waiter::Show() const { cout \u003c\u003c \"Category: waiter\\n\"; Worker::Show(); cout \u003c\u003c \"Panache rating: \" \u003c\u003c panache \u003c\u003c \"\\n\"; } // Singer methods char * Singer::pv[] = {\"other\", \"alto\", \"contralto\", \"soprano\", \"bass\", \"baritone\", \"tenor\"}; void Singer::Set() { Worker::Set(); cout \u003c\u003c \"Enter number for singer's vocal range:\\n\"; int i; for (i = 0; i \u003c Vtypes; i++) { cout \u003c\u003c i \u003c\u003c \": \" \u003c\u003c pv[i] \u003c\u003c \" \"; if ( i % 4 == 3) cout \u003c\u003c endl; } if (i % 4 != 0) cout \u003c\u003c endl; while (cin \u003e\u003e voice \u0026\u0026 (voice \u003c 0 || voice \u003e= Vtypes) ) cout \u003c\u003c \"Please enter a value \u003e= 0 and \u003c \" \u003c\u003c Vtypes \u003c\u003c endl; while (cin.get() != '\\n') continue; } void Singer::Show() const { cout \u003c\u003c \"Category: singer\\n\"; Worker::Show(); cout \u003c\u003c \"Vocal range: \" \u003c\u003c pv[voice] \u003c\u003c endl; } ","wordCount":"418","inLanguage":"en","datePublished":"0001-01-01T00:00:00Z","dateModified":"0001-01-01T00:00:00Z","author":{"@type":"Person","name":"cwHsueh"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:1313/blog/code/c++_primer_plus_worker0/"},"publisher":{"@type":"Organization","name":"cwHsueh","logo":{"@type":"ImageObject","url":"http://localhost:1313/favicon.ico"}}}</script></head><body class=dark id=top><script>localStorage.getItem("pref-theme")==="light"&&document.body.classList.remove("dark")</script><header class=header><nav class=nav><div class=logo><a href=http://localhost:1313/blog/ accesskey=h title="cwHsueh (Alt + H)">cwHsueh</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://cwhsueh.com title=about><span>about</span>&nbsp;<svg fill="none" shape-rendering="geometricPrecision" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a></li><li><a href=http://localhost:1313/blog/leetcode/ title=leetcode><span>leetcode</span></a></li><li><a href=http://localhost:1313/blog/tags/ title=tags><span>tags</span></a></li><li><a href=http://localhost:1313/blog/archives/ title=archive><span>archive</span></a></li><li><a href=http://localhost:1313/blog/search/ title="search (Alt + /)" accesskey=/><span>search</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=http://localhost:1313/blog/>Home</a>&nbsp;»&nbsp;<a href=http://localhost:1313/blog/code/>Codes</a></div><h1 class="post-title entry-hint-parent">Worker0 Class</h1><div class=post-meta>2 min&nbsp;·&nbsp;418 words&nbsp;·&nbsp;cwHsueh</div></header><div class=post-content><p>worker0.h</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++><span class=line><span class=cl><span class=c1>// worker0.h -- working classes
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#ifndef WORKER0_H_
+</span></span></span><span class=line><span class=cl><span class=cp>#define WORKER0_H_
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;string&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=k>class</span> <span class=nc>Worker</span> <span class=c1>// an abstract base class
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>{</span>
+</span></span><span class=line><span class=cl><span class=k>private</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=n>fullname</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>long</span> <span class=n>id</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>public</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>Worker</span><span class=p>()</span> <span class=o>:</span> <span class=n>fullname</span><span class=p>(</span><span class=s>&#34;no one&#34;</span><span class=p>),</span> <span class=n>id</span><span class=p>(</span><span class=mi>0L</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=n>Worker</span><span class=p>(</span><span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=o>&amp;</span> <span class=n>s</span><span class=p>,</span> <span class=kt>long</span> <span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>:</span> <span class=n>fullname</span><span class=p>(</span><span class=n>s</span><span class=p>),</span> <span class=n>id</span><span class=p>(</span><span class=n>n</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=k>virtual</span> <span class=o>~</span><span class=n>Worker</span><span class=p>()</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=c1>// pure virtual destructor
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>Set</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>Show</span><span class=p>()</span> <span class=k>const</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>Waiter</span> <span class=o>:</span> <span class=k>public</span> <span class=n>Worker</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl><span class=k>private</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>panache</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>public</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>Waiter</span><span class=p>()</span> <span class=o>:</span> <span class=n>Worker</span><span class=p>(),</span> <span class=n>panache</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=n>Waiter</span><span class=p>(</span><span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=o>&amp;</span> <span class=n>s</span><span class=p>,</span> <span class=kt>long</span> <span class=n>n</span><span class=p>,</span> <span class=kt>int</span> <span class=n>p</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>:</span> <span class=n>Worker</span><span class=p>(</span><span class=n>s</span><span class=p>,</span> <span class=n>n</span><span class=p>),</span> <span class=n>panache</span><span class=p>(</span><span class=n>p</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=n>Waiter</span><span class=p>(</span><span class=k>const</span> <span class=n>Worker</span> <span class=o>&amp;</span> <span class=n>wk</span><span class=p>,</span> <span class=kt>int</span> <span class=n>p</span> <span class=o>=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>:</span> <span class=n>Worker</span><span class=p>(</span><span class=n>wk</span><span class=p>),</span> <span class=n>panache</span><span class=p>(</span><span class=n>p</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>Set</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>Show</span><span class=p>()</span> <span class=k>const</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>Singer</span> <span class=o>:</span> <span class=k>public</span> <span class=n>Worker</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl><span class=k>protected</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>enum</span> <span class=p>{</span><span class=n>other</span><span class=p>,</span> <span class=n>alto</span><span class=p>,</span> <span class=n>contralto</span><span class=p>,</span> <span class=n>soprano</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>bass</span><span class=p>,</span> <span class=n>baritone</span><span class=p>,</span> <span class=n>tenor</span><span class=p>};</span>
+</span></span><span class=line><span class=cl>    <span class=k>enum</span> <span class=p>{</span><span class=n>Vtypes</span> <span class=o>=</span> <span class=mi>7</span><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=k>private</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>static</span> <span class=kt>char</span> <span class=o>*</span><span class=n>pv</span><span class=p>[</span><span class=n>Vtypes</span><span class=p>];</span> <span class=c1>// string equivs of voice types
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kt>int</span> <span class=n>voice</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>public</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>Singer</span><span class=p>()</span> <span class=o>:</span> <span class=n>Worker</span><span class=p>(),</span> <span class=n>voice</span><span class=p>(</span><span class=n>other</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=n>Singer</span><span class=p>(</span><span class=k>const</span> <span class=n>std</span><span class=o>::</span><span class=n>string</span> <span class=o>&amp;</span> <span class=n>s</span><span class=p>,</span> <span class=kt>long</span> <span class=n>n</span><span class=p>,</span> <span class=kt>int</span> <span class=n>v</span> <span class=o>=</span> <span class=n>other</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>:</span> <span class=n>Worker</span><span class=p>(</span><span class=n>s</span><span class=p>,</span> <span class=n>n</span><span class=p>),</span> <span class=n>voice</span><span class=p>(</span><span class=n>v</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=n>Singer</span><span class=p>(</span><span class=k>const</span> <span class=n>Worker</span> <span class=o>&amp;</span> <span class=n>wk</span><span class=p>,</span> <span class=kt>int</span> <span class=n>v</span> <span class=o>=</span> <span class=n>other</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>:</span> <span class=n>Worker</span><span class=p>(</span><span class=n>wk</span><span class=p>),</span> <span class=n>voice</span><span class=p>(</span><span class=n>v</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>Set</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>Show</span><span class=p>()</span> <span class=k>const</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=cp>#endif
+</span></span></span></code></pre></div><p>worker0.cpp</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++><span class=line><span class=cl><span class=c1>// worker0.cpp -- working class methods
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#include</span> <span class=cpf>&#34;worker0.h&#34;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;iostream&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=k>using</span> <span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=n>std</span><span class=o>::</span><span class=n>cin</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=c1>// Worker methods
+</span></span></span><span class=line><span class=cl><span class=c1>// must implement virtual destructor, even if pure
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>Worker</span><span class=o>::~</span><span class=n>Worker</span><span class=p>()</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=n>Worker</span><span class=o>::</span><span class=n>Set</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Enter worker&#39;s name: &#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>getline</span><span class=p>(</span><span class=n>cin</span><span class=p>,</span> <span class=n>fullname</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Enter worker&#39;s ID: &#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>cin</span> <span class=o>&gt;&gt;</span> <span class=n>id</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=p>(</span><span class=n>cin</span><span class=p>.</span><span class=n>get</span><span class=p>()</span> <span class=o>!=</span> <span class=sc>&#39;\n&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>continue</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=n>Worker</span><span class=o>::</span><span class=n>Show</span><span class=p>()</span> <span class=k>const</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Name: &#34;</span> <span class=o>&lt;&lt;</span> <span class=n>fullname</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Employee ID: &#34;</span> <span class=o>&lt;&lt;</span> <span class=n>id</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// Waiter methods
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>void</span> <span class=n>Waiter</span><span class=o>::</span><span class=n>Set</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>Worker</span><span class=o>::</span><span class=n>Set</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Enter waiter&#39;s panache rating: &#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>cin</span> <span class=o>&gt;&gt;</span> <span class=n>panache</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=p>(</span><span class=n>cin</span><span class=p>.</span><span class=n>get</span><span class=p>()</span> <span class=o>!=</span> <span class=sc>&#39;\n&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>continue</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=n>Waiter</span><span class=o>::</span><span class=n>Show</span><span class=p>()</span> <span class=k>const</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Category: waiter</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>Worker</span><span class=o>::</span><span class=n>Show</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Panache rating: &#34;</span> <span class=o>&lt;&lt;</span> <span class=n>panache</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// Singer methods
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>char</span> <span class=o>*</span> <span class=n>Singer</span><span class=o>::</span><span class=n>pv</span><span class=p>[]</span> <span class=o>=</span> <span class=p>{</span><span class=s>&#34;other&#34;</span><span class=p>,</span> <span class=s>&#34;alto&#34;</span><span class=p>,</span> <span class=s>&#34;contralto&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=s>&#34;soprano&#34;</span><span class=p>,</span> <span class=s>&#34;bass&#34;</span><span class=p>,</span> <span class=s>&#34;baritone&#34;</span><span class=p>,</span> <span class=s>&#34;tenor&#34;</span><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=n>Singer</span><span class=o>::</span><span class=n>Set</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>Worker</span><span class=o>::</span><span class=n>Set</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Enter number for singer&#39;s vocal range:</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>Vtypes</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>i</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;: &#34;</span> <span class=o>&lt;&lt;</span> <span class=n>pv</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=s>&#34; &#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span> <span class=n>i</span> <span class=o>%</span> <span class=mi>4</span> <span class=o>==</span> <span class=mi>3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>i</span> <span class=o>%</span> <span class=mi>4</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=p>(</span><span class=n>cin</span> <span class=o>&gt;&gt;</span> <span class=n>voice</span> <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>voice</span> <span class=o>&lt;</span> <span class=mi>0</span> <span class=o>||</span> <span class=n>voice</span> <span class=o>&gt;=</span> <span class=n>Vtypes</span><span class=p>)</span> <span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Please enter a value &gt;= 0 and &lt; &#34;</span> <span class=o>&lt;&lt;</span> <span class=n>Vtypes</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=p>(</span><span class=n>cin</span><span class=p>.</span><span class=n>get</span><span class=p>()</span> <span class=o>!=</span> <span class=sc>&#39;\n&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>continue</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=n>Singer</span><span class=o>::</span><span class=n>Show</span><span class=p>()</span> <span class=k>const</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Category: singer</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>Worker</span><span class=o>::</span><span class=n>Show</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;Vocal range: &#34;</span> <span class=o>&lt;&lt;</span> <span class=n>pv</span><span class=p>[</span><span class=n>voice</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=http://localhost:1313/blog/>cwHsueh</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

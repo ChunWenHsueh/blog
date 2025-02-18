@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>C/C&#43;&#43; on cwHsueh</title>
+    <link>http://localhost:1313/blog/tags/c/c&#43;&#43;/</link>
+    <description>Recent content in C/C&#43;&#43; on cwHsueh</description>
+    <generator>Hugo -- 0.144.0</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 04 Feb 2025 23:58:55 -0700</lastBuildDate>
+    <atom:link href="http://localhost:1313/blog/tags/c/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introduction to Makefile</title>
+      <link>http://localhost:1313/blog/posts/makefile/</link>
+      <pubDate>Tue, 04 Feb 2025 23:58:55 -0700</pubDate>
+      <guid>http://localhost:1313/blog/posts/makefile/</guid>
+      <description>&lt;h2 id=&#34;why-make&#34;&gt;Why make?&lt;/h2&gt;
+&lt;p&gt;Make is a build automation tool that automatically builds executable programs and libraries from source code by reading files called Makefiles, which specify how to derive the target program. It avoids the need to manually type everything out every time you want to compile your code.&lt;/p&gt;
+&lt;h2 id=&#34;syntax&#34;&gt;Syntax&lt;/h2&gt;
+&lt;p&gt;Make has the following syntax:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-make&#34; data-lang=&#34;make&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;target&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dependencies&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For example, if you have a file called &lt;code&gt;hello.c&lt;/code&gt; and you want to compile it into an executable called &lt;code&gt;hello&lt;/code&gt;, you can write a Makefile like this:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
