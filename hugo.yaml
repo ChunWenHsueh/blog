@@ -90,6 +90,11 @@ params:
   #   - name: github
   #     url: "https://github.com/"
 
+# https://github.com/adityatelange/hugo-PaperMod/discussions/248
+services:
+  googleAnalytics:
+    id: G-8MRV1Z256B
+
   # analytics:
   #   google:
   #     SiteVerificationTag: "XYZabc"
