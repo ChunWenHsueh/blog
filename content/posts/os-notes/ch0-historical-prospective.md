@@ -2,10 +2,12 @@
 title: "Ch0 Historical Prospective"
 date: 2025-03-02T00:00:00-07:00
 draft: false
-showToc: false
+showToc: true
 TocOpen: false
-categories: [OS]
+categories: [Operating System]
 ---
+
+This chapter is a historical prospective of OS. Most of them are just conceptual, but they are important to understand the evolution of OS. I find its hard to organize the content, so the table of content is not very structured.
 
 # Historical Prospective
 
@@ -56,7 +58,7 @@ Parallel systems can be further classified into
     - One master CPU and multiple salve CPUs
     - Mmore common in extremely large systems
 
-Multi-Core Processor
+## Multi-Core Processor
 - A CPU with multiple cores on the same die (chip) 
 - On-chip communication is faster than between-chip communication
 - Also use less power than multiple single-core chips
