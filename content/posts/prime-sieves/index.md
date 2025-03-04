@@ -4,7 +4,7 @@ date: 2025-02-18T00:00:00-07:00
 draft: false
 showToc: true
 TocOpen: true
-tags: ["DSA"]
+categories: [Data Structures and Algorithms]
 ---
 
 # How to find all primes under `n`?

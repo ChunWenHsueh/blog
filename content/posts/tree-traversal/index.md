@@ -3,7 +3,8 @@ title: "Tree traversal"
 date: 2023-06-15T20:00:00+08:00
 draft: false
 math: true
-tags: ["DSA"]
+categories: [Data Structures and Algorithms]
+tags: ["tree"]
 ---
 
 今天來複習一下常見遍歷樹的方式。

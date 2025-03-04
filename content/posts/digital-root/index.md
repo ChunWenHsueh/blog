@@ -3,6 +3,7 @@ title: "Digital Root / Repeated digital sum"
 date: 2023-04-26T15:34:53+08:00
 draft: false
 math: true
+categories: [Math]
 ---
 
 今天寫到 leetcode 258. Add Digits (https://leetcode.com/problems/add-digits/)，發現了這個有趣的題目。題目本身不難，但是 follow up 要求寫出 O(1) 時間複雜度的解法，因此卡了一下。

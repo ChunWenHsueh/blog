@@ -3,7 +3,7 @@ title: "Majority Voting Algorithm 多數投票算法"
 date: 2023-11-07T12:00:00+08:00
 draft: false
 math: true
-tags: ["DSA"]
+categories: [Data Structures and Algorithms]
 ---
 問題描述
 

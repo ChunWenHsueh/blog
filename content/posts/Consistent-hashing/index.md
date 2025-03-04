@@ -4,7 +4,7 @@ date: 2025-02-05T00:00:00-07:00
 draft: false
 showToc: true
 TocOpen: true
-tags: [distributed systems]
+categories: [Distributed Systems]
 ---
 
 This is a note of this [paragraph](https://xiaolincoding.com/os/8_network_system/hash.html).

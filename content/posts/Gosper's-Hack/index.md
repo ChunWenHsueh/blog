@@ -3,6 +3,7 @@ title: "Gosper's Hack"
 date: 2023-05-15T20:00:00+08:00
 draft: false
 math: true
+categories: [Data Structures and Algorithms]
 ---
 
 這是在寫 [1799. Maximize Score After N Operations](https://leetcode.com/problems/maximize-score-after-n-operations/) 時遇到的問題。

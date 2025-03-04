@@ -4,8 +4,7 @@ date: 2024-10-30T23:58:55-07:00
 draft: false
 showToc: true
 TocOpen: true
-Category: ["OS"]
-tags: ["OS"]
+categories: [Operating System]
 ---
 
 This is a note from [WHY IS THE HEAP SO SLOW?](https://youtu.be/ioJkA7Mw2-U)
