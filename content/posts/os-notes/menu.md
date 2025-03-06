@@ -10,5 +10,6 @@ categories: [Operating System]
 Notes for [周志遠作業系統](https://ocw.nthu.edu.tw/ocw/index.php?page=course&cid=141)
 
 - [Ch0: historical prospective](../ch0-historical-prospective)
+- [Ch1: introduction](../ch1-introduction)
 
 <!-- [Ch0: historical prospective]({{< ref "/posts/os-notes/ch0-historical-prospective.md" >}}) -->
