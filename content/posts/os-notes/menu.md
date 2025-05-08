@@ -1,6 +1,6 @@
 ---
 title: "OS notes"
-date: 2025-05-01T00:00:00-07:00
+date: 2025-05-07T00:00:00-07:00
 draft: false
 showToc: true
 TocOpen: false
@@ -15,6 +15,7 @@ The order of the chapters follows the teacher's teaching sequence, not the numer
 [Ch1: Introduction](../ch1-introduction)  
 [Ch2: OS Structure](../ch2-os-structure.md)  
 [Ch3: Processes Concept](../ch3-processes-concept)  
-[Ch8: Memory Management](../ch8-memory-management)
+[Ch8: Memory Management](../ch8-memory-management)  
+[Ch9: Virtual Memory](../ch9-virtual-memory)
 
 <!-- [Ch0: historical prospective]({{< ref "/posts/os-notes/ch0-historical-prospective.md" >}}) -->
