@@ -4,7 +4,7 @@ date: 2025-02-04T23:58:55-07:00
 draft: false
 showToc: true
 TocOpen: true
-categories: [CI/CD]
+categories: [CI&CD]
 ---
 
 ## Why make?

@@ -1,5 +1,5 @@
 ---
-title: "ch9 Virtual Memory Management"
+title: "Ch9 Virtual Memory Management"
 date: 2025-05-04T00:00:00-07:00
 draft: false
 showToc: true
