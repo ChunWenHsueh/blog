@@ -24,7 +24,7 @@ Overview
 - all threads belonging to the same process share: code section, data section, and OS resources (e.g. open files and signals)
 - But each thread has its own (thread control block): thread ID, program counter, register set, and a stack
 
-![Single-threaded and multithreaded processes](./ch04-01.png)
+![Single-threaded and multithreaded processes](ch04-01.png)
 
 ### Motivation
 
@@ -45,7 +45,7 @@ Overview
 
 ### Why Thread?
 
-![Why Thread?](./ch04-02.png)
+![Why Thread?](ch04-02.png)
 
 ### Multithcore Programming
 
@@ -53,7 +53,7 @@ Overview
 - Multicore systems putting pressure on system designers and application programmers
   - OS designers: scheduling algorithms use cores to allow the parallel execution
 
-![Parallel execution on a multicore system](./ch04-03.png)
+![Parallel execution on a multicore system](ch04-03.png)
 
 ### Challenges in Multicore Programming
 
@@ -89,7 +89,7 @@ Kernel threads
 
 ## Multithreading Models
 
-![Multithreading Models](./ch04-04.png)
+![Multithreading Models](ch04-04.png)
 
 ### Many-to-One
 
@@ -223,7 +223,7 @@ indication of the level of the sharing
 - execlp() works the same; replace the entire process
   - If exec() is called immediately after forking, then duplicating all threads is unnecessary
 
-![different versions of fork](./ch04-05.png)
+![different versions of fork](ch04-05.png)
 
 The middle image is a fork that duplicates all threads, while the right image is a fork that duplicates only the calling thread.
 

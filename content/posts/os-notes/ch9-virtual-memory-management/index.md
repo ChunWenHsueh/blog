@@ -40,7 +40,7 @@ Virtual memory can be implemented via
 - Demand paging (most common)
 - Demand segmentation: more complicated due to variable sizes
 
-![Diagram showing virtual memory that is larger than physical memory](./ch09-01.png)
+![Diagram showing virtual memory that is larger than physical memory](ch09-01.png)
 
 ## Demand Paging
 
@@ -63,7 +63,7 @@ Hardware support
   - 0: page is not in memory
   - initially all bits are set to 0
 
-![Page table when some pages are not in main memory](./ch09-02.png)
+![Page table when some pages are not in main memory](ch09-02.png)
 _Page table when some pages are not in main memory_
 
 ### Page Fault
@@ -80,7 +80,7 @@ First reference to a page will trap to OS: page-fault trap
 4. Reset page table, valid-invalid bit = 1
 5. Restart instruction
 
-![Steps in handling a page fault](./ch09-03.png)
+![Steps in handling a page fault](ch09-03.png)
 _Steps in handling a page fault_
 
 ### Page Replacement
@@ -133,10 +133,10 @@ Allow both the parent and the child process to share the same frames in memory
 - Free frames are allocated from a pool of zeroed-out frames (security reason)
   - The content of a frame is erased to 0
 
-![Before process 1 modifies page C](./ch09-04.png)
+![Before process 1 modifies page C](ch09-04.png)
 _Before process 1 modifies page C_
 
-![After process 1 modifies page C](./ch09-05.png)
+![After process 1 modifies page C](ch09-05.png)
 _After process 1 modifies page C_
 
 ### Memory-Mapped Files
@@ -188,7 +188,7 @@ The oldest page in a FIFO queue is replaced
 - Reference string: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
 - 3 frames (available memory frames = 3) -> 9 page faults
 
-![FIFO page-replacement algorithm](./ch09-06.png)
+![FIFO page-replacement algorithm](ch09-06.png)
 _a red number means that we have a page fault_
 
 Does more allocated frames guarantee less page fault?
@@ -196,7 +196,7 @@ Does more allocated frames guarantee less page fault?
 - Reference string: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
 - 4 frames (available memory frames = 4) -> 10 page faults!
 
-![FIFO page-replacement algorithm](./ch09-07.png)
+![FIFO page-replacement algorithm](ch09-07.png)
 
 Belady's anomaly: the page-fault rate may increase as the number of allocated frames increase
 
@@ -207,7 +207,7 @@ algorithm does exist, since we need to know the future reference string
 
 - 4 frames: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5 -> 6 page faults
 
-![Optimal page-replacement algorithm](./ch09-08.png)
+![Optimal page-replacement algorithm](ch09-08.png)
 
 #### LRU algorithm
 
@@ -228,7 +228,7 @@ Stack implementation
 - replacement: remove the page at the bottom
 - 4 frames: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5 -> 8 page faults!
 
-![LRU algorithm](./ch09-09.png)
+![LRU algorithm](ch09-09.png)
 
 Stack Algorithm
 
@@ -300,7 +300,7 @@ Global versus Local Allocation
 - Very high paging activity
 - A process is thrashing if it is spending more time paging than executing
 
-![Thrashing](./ch09-10.png)
+![Thrashing](ch09-10.png)
 
 Performance problem caused by thrashing (Assume global replacement is used)
 
@@ -349,4 +349,4 @@ Page fault frequency directly measures and controls the page-fault rate to preve
 - If page fault rate exceeds the upper limit: allocate another frame to the process
 - If page fault rate falls below the lower limit: remove a frame from the process
 
-![Page-fault frequency](./ch09-11.png)
+![Page-fault frequency](ch09-11.png)
